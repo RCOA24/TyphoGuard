@@ -22,7 +22,7 @@
     <div class="card-body">
       <div class="kpi">High in 2h 15m</div>
       <p class="text-sm text-slate-500">Next high: 1.82 m @ 14:05</p>
-      <div class="mt-4 h-28 rounded-lg bg-gradient-to-t from-sky-100 to-white dark:from-sky-900/30 dark:to-transparent"></div>
+      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-sky-100 to-white dark:from-sky-900/30 dark:to-transparent"></div>
     </div>
   </div>
 
@@ -32,7 +32,7 @@
       <div class="kpi">209.3 m</div>
       <p class="text-sm text-slate-500">Normal High Water Level: 210 m</p>
       <div class="mt-2"><span class="badge-warn">Near threshold</span></div>
-      <div class="mt-4 h-28 rounded-lg bg-gradient-to-t from-amber-100 to-white dark:from-amber-900/30 dark:to-transparent"></div>
+      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-amber-100 to-white dark:from-amber-900/30 dark:to-transparent"></div>
     </div>
   </div>
 
@@ -41,7 +41,7 @@
     <div class="card-body">
       <div class="kpi">No active signal</div>
       <p class="text-sm text-slate-500">Monitoring PAGASA advisories</p>
-      <div class="mt-4 h-28 rounded-lg bg-gradient-to-t from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent"></div>
+      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent"></div>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
   <div class="col-span-12 lg:col-span-8 card">
     <div class="card-head">Map (placeholder)</div>
     <div class="card-body">
-      <div class="h-80 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+      <div class="h-60 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
         Embed leaflet map / radar here
       </div>
     </div>
