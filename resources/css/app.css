@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+/* Scan Laravel view & JS files for Tailwind classes */
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Custom Theme Overrides */
+@theme {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+               'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Optional: Your custom styles below */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Small, reusable bits */
+.card {
+  @apply bg-white dark:bg-slate-800/70 rounded-xl shadow-sm ring-1 ring-slate-900/5;
+}
+.card-head {
+  @apply px-4 pt-4 text-sm text-slate-500 dark:text-slate-400;
+}
+.card-body {
+  @apply px-4 pb-4;
+}
+.kpi {
+  @apply text-2xl font-semibold tracking-tight;
+}
+.badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+}
+
+.badge-ok {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-400/10 dark:text-green-400;
+}
+
+.badge-warn {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-400;
+}
+
+.badge-danger {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-400/10 dark:text-red-400;
+}
