@@ -10,6 +10,7 @@
 <link rel="icon" type="image/png" href="{{ asset('images/guard.png') }}" sizes="32x32">
 
   @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite('resources/js/ph-time.js')
 </head>
 <body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
   <!-- Topbar -->
@@ -47,8 +48,12 @@
       <div class="mt-4 card">
         <div class="card-head">System</div>
         <div class="card-body">
-          <p class="text-sm text-slate-500">PH Timezone (Asia/Manila)</p>
-        </div>
+    <p class="text-sm text-slate-500">
+        PH Timezone (Asia/Manila): 
+        <span id="ph-time">Loading...</span>
+    </p>
+</div>
+
       </div>
     </aside>
 
@@ -81,5 +86,6 @@
   <footer class="py-8 text-center text-xs text-slate-500">
     © {{ now('Asia/Manila')->year }} TyphoGuard · Prototype
   </footer>
+
 </body>
 </html>
