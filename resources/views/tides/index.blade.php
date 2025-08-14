@@ -23,10 +23,15 @@
         <div class="card"><div class="card-body"><div class="text-sm text-slate-500">Next Low</div><div class="kpi">0.27 m</div><p class="text-xs text-slate-500">20:17</p></div></div>
         <div class="card"><div class="card-body"><div class="text-sm text-slate-500">Range</div><div class="kpi">1.55 m</div><p class="text-xs text-slate-500">Daily</p></div></div>
       </div>
-      <div class="h-56 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
-        Tide chart goes here
+      <div class="h-56 rounded-lg bg-slate-100 dark:bg-slate-800 p-2">
+        <canvas id="tideChartFull" style="width:100%;height:100%;display:block;"></canvas>
       </div>
+      
     </div>
   </div>
 </div>
+<!-- Add Chart.js if not already included in your layout -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Add tide.js -->
+<script src="{{ asset('js/tide.js') }}"></script>
 @endsection

@@ -6,6 +6,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TyphoGuard</title>
+  <!-- If using PNG -->
+<link rel="icon" type="image/png" href="{{ asset('images/guard.png') }}" sizes="32x32">
+
   @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
@@ -17,8 +20,11 @@
           <!-- Menu icon -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <a href="{{ url('/') }}" class="font-bold tracking-tight">TyphoGuard</a>
-        <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-400/10 dark:text-sky-400">Beta</span>
+       <a href="{{ url('/') }}" class="font-bold tracking-tight flex items-center">
+        <img src="{{ asset('images/guard.png') }}" alt="TyphoGuard Logo" class="h-6 w-6 mr-2"> TyphoGuard</a>
+        <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-400/10 dark:text-sky-400"> Beta
+     </span>
+
       </div>
       <div class="flex items-center gap-3">
         <button @click="dark=!dark" class="text-sm px-3 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">

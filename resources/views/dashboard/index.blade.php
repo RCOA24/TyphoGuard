@@ -16,15 +16,20 @@
     </div>
   </div>
 
-  <!-- KPIs -->
-  <div class="col-span-12 md:col-span-4 card">
+<!-- KPIs -->
+<div class="col-span-12 md:col-span-4 card">
     <div class="card-head">Tide — Manila Bay</div>
     <div class="card-body">
-      <div class="kpi">High in 2h 15m</div>
-      <p class="text-sm text-slate-500">Next high: 1.82 m @ 14:05</p>
-      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-sky-100 to-white dark:from-sky-900/30 dark:to-transparent"></div>
+        <div class="kpi">High in 2h 15m</div>
+        <p class="text-sm text-slate-500 next-high">Next high: 1.82 m @ 14:05</p>
+
+        <!-- Chart container -->
+        <div class="mt-4">
+            <canvas id="tideChart" height="150"></canvas>
+        </div>
     </div>
-  </div>
+</div>
+
 
   <div class="col-span-12 md:col-span-4 card">
     <div class="card-head">Dam — Angat</div>
@@ -85,4 +90,9 @@
     </div>
   </div>
 </div>
+
+
+<script src="{{ asset('js/tide.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 @endsection
