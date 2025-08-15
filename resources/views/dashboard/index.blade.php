@@ -50,15 +50,16 @@
     </div>
   </div>
 
-  <!-- Map placeholder + right panel -->
-  <div class="col-span-12 lg:col-span-8 card">
-    <div class="card-head">Map (placeholder)</div>
+<!-- Map + Manila Bay Map -->
+<div class="col-span-12 lg:col-span-8 card">
+    <div class="card-head">Map (Manila Bay)</div>
     <div class="card-body">
-      <div class="h-60 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
-        Embed leaflet map / radar here
-      </div>
+        <div id="manila-bay-map" class="h-50 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+            <!-- Leaflet map will render here -->
+        </div>
     </div>
-  </div>
+</div>
+
 
   <div class="col-span-12 lg:col-span-4 space-y-6">
     <div class="card">

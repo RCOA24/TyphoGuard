@@ -7,10 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TyphoGuard</title>
   <!-- If using PNG -->
-<link rel="icon" type="image/png" href="{{ asset('images/guard.png') }}" sizes="32x32">
+   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+   <link rel="icon" type="image/png" href="{{ asset('images/guard.png') }}" sizes="32x32">
 
-  @vite(['resources/css/app.css','resources/js/app.js'])
-    @vite('resources/js/ph-time.js')
+  @vite([
+      'resources/css/app.css',
+      'resources/js/app.js',
+      'resources/js/ph-time.js',
+      'resources/js/manila-bay-map.js'
+  ])
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
 </head>
 <body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
   <!-- Topbar -->

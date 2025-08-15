@@ -18,11 +18,30 @@
           <input type="date" x-model="date" class="mt-1 w-full">
         </div>
       </div>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <div class="card"><div class="card-body"><div class="text-sm text-slate-500">Next High</div><div class="kpi">1.82 m</div><p class="text-xs text-slate-500">14:05</p></div></div>
-        <div class="card"><div class="card-body"><div class="text-sm text-slate-500">Next Low</div><div class="kpi">0.27 m</div><p class="text-xs text-slate-500">20:17</p></div></div>
-        <div class="card"><div class="card-body"><div class="text-sm text-slate-500">Range</div><div class="kpi">1.55 m</div><p class="text-xs text-slate-500">Daily</p></div></div>
-      </div>
+     <div class="grid sm:grid-cols-3 gap-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-sm text-slate-500">Next High</div>
+            <div class="kpi" id="next-high-value">-- m</div>
+            <p class="text-xs text-slate-500" id="next-high-time">--</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="text-sm text-slate-500">Next Low</div>
+            <div class="kpi" id="next-low-value">-- m</div>
+            <p class="text-xs text-slate-500" id="next-low-time">--</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="text-sm text-slate-500">Range</div>
+            <div class="kpi" id="tide-range">-- m</div>
+            <p class="text-xs text-slate-500">Daily</p>
+        </div>
+    </div>
+</div>
+
       <div class="h-56 rounded-lg bg-slate-100 dark:bg-slate-800 p-2">
         <canvas id="tideChartFull" style="width:100%;height:100%;display:block;"></canvas>
       </div>
