@@ -42,26 +42,46 @@ async function loadTideData() {
         const nextLow = findNextLowTide(times, heights);
 
         // Update Blade cards dynamically
-        if (nextHigh) {
+            if (nextHigh) {
+            const now = new Date();
+            const diffMs = nextHigh.time - now;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+            // --- Dashboard (KPI + Next High Line) ---
+            const kpiEl = document.querySelector('.kpi');
+            if (kpiEl) {
+                kpiEl.textContent = `High in ${diffHours}h ${diffMinutes}m`;
+            }
+
+            const nextHighEl = document.querySelector('.next-high');
+            if (nextHighEl) {
+                nextHighEl.textContent = `Next high: ${nextHigh.height.toFixed(2)} m @ ${formatTime12(nextHigh.time)}`;
+            }
+
+            // --- Tide Section (Card for Next High) ---
             const elValue = document.getElementById('next-high-value');
             const elTime = document.getElementById('next-high-time');
-            if (elValue) elValue.textContent = `${nextHigh.height.toFixed(2)} m`;
+            if (elValue) elValue.textContent = `${nextHigh.height.toFixed(2)} m (in ${diffHours}h ${diffMinutes}m)`;
             if (elTime) elTime.textContent = formatTime12(nextHigh.time);
         }
 
-        if (nextLow) {
-            const elValue = document.getElementById('next-low-value');
-            const elTime = document.getElementById('next-low-time');
-            if (elValue) elValue.textContent = `${nextLow.height.toFixed(2)} m`;
-            if (elTime) elTime.textContent = formatTime12(nextLow.time);
-        }
 
-        // Daily range = max - min
-        const todayLevels = heights.slice(0, 24); // first 24 hours
-        const maxLevel = Math.max(...todayLevels);
-        const minLevel = Math.min(...todayLevels);
-        const rangeEl = document.getElementById('tide-range');
-        if (rangeEl) rangeEl.textContent = `${(maxLevel - minLevel).toFixed(2)} m`;
+            if (nextLow) {
+                // Update Next Low card
+                const elValue = document.getElementById('next-low-value');
+                const elTime = document.getElementById('next-low-time');
+                if (elValue) elValue.textContent = `${nextLow.height.toFixed(2)} m`;
+                if (elTime) elTime.textContent = formatTime12(nextLow.time);
+            }
+
+            // Daily range = max - min
+            const todayLevels = heights.slice(0, 24); // first 24 hours
+            const maxLevel = Math.max(...todayLevels);
+            const minLevel = Math.min(...todayLevels);
+            const rangeEl = document.getElementById('tide-range');
+            if (rangeEl) rangeEl.textContent = `${(maxLevel - minLevel).toFixed(2)} m`;
+
 
         // Optional: Chart rendering (reuse your existing chart code)
         const pointColors = heights.map((h, i) => (nextHigh && i === nextHigh.index ? 'red' : '#0284c7'));

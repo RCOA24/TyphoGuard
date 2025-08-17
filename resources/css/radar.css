@@ -1,0 +1,53 @@
+/* Radar map container */
+#radar-map {
+  width: 100%;
+  height: 298px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative; /* so controls can be absolutely positioned */
+}
+
+/* Controls overlay (bottom-left) */
+.radar-controls {
+  position: absolute;
+  left: .75rem;
+  bottom: .75rem;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border-radius: .5rem;
+  padding: .5rem .75rem;
+  font-size: .875rem;
+}
+
+/* Timestamp badge (top-right) */
+.radar-timestamp {
+  position: absolute;
+  right: .75rem;
+  top: .75rem;
+  background: rgba(15, 23, 42, 0.6);
+  color: #fff;
+  border-radius: .5rem;
+  padding: .35rem .6rem;
+  font-size: .75rem;
+}
+
+/* Simple button + range styling */
+.radar-btn {
+  appearance: none;
+  border: 0;
+  border-radius: .375rem;
+  background: #22c55e;
+  color: white;
+  padding: .35rem .6rem;
+  cursor: pointer;
+}
+.radar-btn.pause { background: #ef4444; }
+
+.radar-range {
+  width: 160px;
+  accent-color: #22c55e;
+}

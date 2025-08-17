@@ -2,34 +2,33 @@
 
 @section('content')
 <div class="grid grid-cols-12 gap-6">
-  <!-- Hero / Alert -->
-  <div class="col-span-12 card overflow-hidden">
-    <div class="card-body flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <h1 class="text-xl font-semibold">Situational Awareness (Prototype)</h1>
-        <p class="text-sm text-slate-500">Real-time water & weather intelligence for PH communities.</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="badge-ok">Systems nominal</span>
-        <span class="badge-warn">2 advisories</span>
-      </div>
-    </div>
-  </div>
+ 
 
 <!-- KPIs -->
 <div class="col-span-12 md:col-span-4 card">
     <div class="card-head">Tide — Manila Bay</div>
     <div class="card-body">
-        <div class="kpi">High in 2h 15m</div>
-        <p class="text-sm text-slate-500 next-high">Next high: 1.82 m @ 14:05</p>
+        <div class="kpi"></div> <!-- will be filled by JS -->
+        <p class="text-sm text-slate-500 next-high"></p> <!-- will be filled by JS -->
 
         <!-- Chart container -->
         <div class="mt-4">
-            <canvas id="tideChart" height="150"></canvas>
+            <canvas id="tideChart" height="250"></canvas>
         </div>
     </div>
 </div>
 
+<div class="col-span-12 md:col-span-8 card">
+  <div class="card-head">Live Radar — Philippines</div>
+  <div class="card-body">
+    <div id="radar-map"></div>
+    <p class="text-xs text-slate-500 mt-2">
+      Data source:
+      <a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" class="text-blue-500">RainViewer</a> +
+      <a href="https://www.esri.com/en-us/home" target="_blank" class="text-blue-500">Esri</a>
+    </p>
+  </div>
+</div>
 
   <div class="col-span-12 md:col-span-4 card">
     <div class="card-head">Dam — Angat</div>
@@ -41,14 +40,12 @@
     </div>
   </div>
 
-  <div class="col-span-12 md:col-span-4 card">
-    <div class="card-head">Tropical System</div>
-    <div class="card-body">
-      <div class="kpi">No active signal</div>
-      <p class="text-sm text-slate-500">Monitoring PAGASA advisories</p>
-      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-emerald-100 to-white dark:from-emerald-900/30 dark:to-transparent"></div>
-    </div>
-  </div>
+
+
+
+
+
+
 
 <!-- Map + Manila Bay Map -->
 <div class="col-span-12 lg:col-span-8 card">
@@ -61,39 +58,12 @@
 </div>
 
 
-  <div class="col-span-12 lg:col-span-4 space-y-6">
-    <div class="card">
-      <div class="card-head">Active Advisories</div>
-      <div class="card-body space-y-3">
-        <div class="flex items-start justify-between">
-          <div>
-            <p class="font-medium text-sm">Urban flood watch</p>
-            <p class="text-xs text-slate-500">Quezon City · Next 6 hours</p>
-          </div>
-          <span class="badge-warn">Watch</span>
-        </div>
-        <div class="flex items-start justify-between">
-          <div>
-            <p class="font-medium text-sm">Dam release readiness</p>
-            <p class="text-xs text-slate-500">Angat · Standby only</p>
-          </div>
-          <span class="badge-danger">Heads-up</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">Quick Actions</div>
-      <div class="card-body grid grid-cols-2 gap-3">
-        <a href="{{ url('/dams') }}" class="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">View Dams</a>
-        <a href="{{ url('/tides') }}" class="px-3 py-2 text-sm rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">View Tides</a>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<script src="{{ asset('js/tide.js') }}"></script>
+<script src="{{ asset('js/radar.js') }}"></script>
+
+<!-- Skycons JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/skycons/1396634940/skycons.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @endsection

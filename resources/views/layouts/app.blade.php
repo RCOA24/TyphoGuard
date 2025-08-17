@@ -10,13 +10,22 @@
    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
    <link rel="icon" type="image/png" href="{{ asset('images/guard.png') }}" sizes="32x32">
 
-  @vite([
-      'resources/css/app.css',
-      'resources/js/app.js',
-      'resources/js/ph-time.js',
-      'resources/js/manila-bay-map.js'
-  ])
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+ <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+@vite([
+    'resources/css/app.css',
+    'resources/js/app.js',
+    'resources/js/ph-time.js',
+    'resources/js/manila-bay-map.js',
+    'resources/js/tide.js',
+    'resources/css/radar.css',
+    'resources/js/radar.js'
+])
+
     
 </head>
 <body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
@@ -41,6 +50,7 @@
       </div>
     </div>
   </header>
+  
 
   <!-- Shell -->
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-12 gap-6 py-6">
@@ -59,6 +69,7 @@
         PH Timezone (Asia/Manila): 
         <span id="ph-time">Loading...</span>
     </p>
+    
 </div>
 
       </div>
