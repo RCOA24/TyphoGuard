@@ -44,7 +44,9 @@
 
       <div class="h-56 rounded-lg bg-slate-100 dark:bg-slate-800 p-2">
         <canvas id="tideChartFull" style="width:100%;height:100%;display:block;"></canvas>
+        
       </div>
+       <p class="text-xs text-slate-500 mt-2">High tide and Low Tide Data by <a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a></p>
       
     </div>
   </div>

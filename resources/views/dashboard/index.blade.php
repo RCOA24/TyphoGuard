@@ -22,6 +22,8 @@
           <p class="text-xs text-slate-500 mt-2">High tide and Low Tide Data by <a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a></p>
             <canvas id="tideChart" height="250"></canvas>      
         </div>   
+
+        
     </div>
 </div>
 
@@ -30,19 +32,16 @@
   <div class="card-head">Detailed Weather & Live Radar — Philippines</div>
   <div class="card-body">
     <!-- Radar Map -->
+     
     <div id="radar-map" style="height: 300px; margin-bottom: 20px;"></div>
 
-    <!-- Weather chart -->
-    <canvas id="weather-chart" width="400" height="100"></canvas>
-
-    <p class="text-xs text-slate-500 mt-2">
-      Weather data by
-      <a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a>,
-      Radar overlay by
-      <a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" class="text-blue-500">RainViewer</a> +
-      <a href="https://www.esri.com/en-us/home" target="_blank" class="text-blue-500">Esri</a>
+   <div id="weather-chart-container" style="width:100%;">
+      <canvas id="weather-chart" width="1000" height="300"></canvas>
+    </div>
+    <p class="text-xs text-slate-500 mt-2">Weather data by<a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a>
     </p>
   </div>
+  
 </div>
 
 
