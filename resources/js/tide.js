@@ -67,13 +67,32 @@ async function loadTideData() {
         }
 
 
-            if (nextLow) {
-                // Update Next Low card
-                const elValue = document.getElementById('next-low-value');
-                const elTime = document.getElementById('next-low-time');
-                if (elValue) elValue.textContent = `${nextLow.height.toFixed(2)} m`;
-                if (elTime) elTime.textContent = formatTime12(nextLow.time);
-            }
+// Update Blade cards dynamically for next low tide
+if (nextLow) {
+    const now = new Date();
+    const diffMs = nextLow.time - now;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    // --- Dashboard (KPI + Next Low Line) ---
+    const nextLowKpiEl = document.querySelector('.kpi-low');
+    if (nextLowKpiEl) {
+        nextLowKpiEl.textContent = `Low in ${diffHours}h ${diffMinutes}m`;
+    }
+
+    const nextLowEl = document.querySelector('.next-low');
+    if (nextLowEl) {
+        nextLowEl.textContent = `Next low: ${nextLow.height.toFixed(2)} m @ ${formatTime12(nextLow.time)}`;
+    }
+
+    // --- Tide Section (Card for Next Low) ---
+    const elValueLow = document.getElementById('next-low-value');
+    const elTimeLow = document.getElementById('next-low-time');
+    if (elValueLow) elValueLow.textContent = `${nextLow.height.toFixed(2)} m (in ${diffHours}h ${diffMinutes}m)`;
+    if (elTimeLow) elTimeLow.textContent = formatTime12(nextLow.time);
+}
+
+
 
             // Daily range = max - min
             const todayLevels = heights.slice(0, 24); // first 24 hours
