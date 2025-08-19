@@ -20,6 +20,7 @@
       'resources/css/radar.css',
       'resources/js/radar.js',
       'resources/js/weather.js',
+      
   ])
 </head>
 

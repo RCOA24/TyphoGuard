@@ -45,3 +45,68 @@
 .badge-danger {
   @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-400/10 dark:text-red-400;
 }
+
+/* Dam card overrides to match existing card styles */
+.dam-card {
+  @apply bg-white dark:bg-slate-800/70 rounded-xl shadow-sm ring-1 ring-slate-900/5;
+}
+
+.dam-card-header {
+  @apply px-4 pt-4 text-sm text-slate-500 dark:text-slate-400 font-semibold;
+}
+
+.dam-card-body {
+  @apply px-4 pb-4;
+}
+
+.dam-kpi {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+.dam-badge-ok {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-400/10 dark:text-green-400;
+}
+
+.dam-badge-warn {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-400;
+}
+
+.dam-badge-danger {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-400/10 dark:text-red-400;
+}
+
+/* Animations for Dam Water Level Bars and Badges */
+
+/* Gradient shift for red bars */
+@keyframes gradientShift {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* Pulse glow for critical red bars */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px #ff4d4d; }
+  50% { box-shadow: 0 0 15px #ff1a1a; }
+}
+
+/* Subtle flowing effect for green/amber bars */
+@keyframes flow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
+}
+
+/* Classes for animations */
+.animate-pulse-glow {
+  animation: gradientShift 3s ease infinite, pulseGlow 1.5s ease infinite;
+}
+
+.animate-flow {
+  animation: flow 6s linear infinite;
+}
+
+/* Glowing badge */
+.badge-glow {
+  box-shadow: 0 0 10px #ff4d4d;
+  transition: box-shadow 0.3s ease-in-out;
+}

@@ -41,25 +41,22 @@
     <p class="text-xs text-slate-500 mt-2">Weather data by<a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a>
     </p>
   </div>
+
+  
   
 </div>
 
 
-
-
-
-
-
-
-  <div class="col-span-12 md:col-span-4 card">
-    <div class="card-head">Dam — Angat</div>
-    <div class="card-body">
-      <div class="kpi">209.3 m</div>
-      <p class="text-sm text-slate-500">Normal High Water Level: 210 m</p>
-      <div class="mt-2"><span class="badge-warn">Near threshold</span></div>
-      <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-amber-100 to-white dark:from-amber-900/30 dark:to-transparent"></div>
-    </div>
+<div class="col-span-12 md:col-span-4 card">
+  <div class="card-head">Dam — Angat</div>
+  <div class="card-body">
+    <div id="angat-level" class="kpi">-- m</div>
+    <p class="text-sm text-slate-500">Normal High Water Level: <span id="angat-normal">--</span> m</p>
+    <div class="mt-2"><span id="angat-status" class="badge-warn">Loading...</span></div>
+    <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-amber-100 to-white dark:from-amber-900/30 dark:to-transparent"></div>
   </div>
+</div>
+
 
 <!-- Map + Manila Bay Map -->
 <div class="col-span-12 lg:col-span-8 card">
@@ -77,6 +74,8 @@
 <script src="{{ asset('js/radar.js') }}"></script>
 <!-- Include your external weather JS -->
 <script src="weather.js"></script>
+<script src="{{ asset('js/dam.js') }}"></script>
+
 
 <!-- Skycons JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skycons/1396634940/skycons.js"></script>

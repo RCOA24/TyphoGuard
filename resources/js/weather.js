@@ -1,5 +1,3 @@
-// weather.js
-
 const weatherCodeMap = {
   0: { label: "Clear", color: "#FFD700", severity: 1 },
   1: { label: "Mainly clear", color: "#FFE08A", severity: 1 },
@@ -19,42 +17,68 @@ const weatherCodeMap = {
   95: { label: "Thunderstorm", color: "#e74242ff", severity: 5 }
 };
 
-function aggregateRainToDaily(hourlyTime, hourlyRain) {
-  const dailyTotals = {};
-  hourlyTime.forEach((t, i) => {
-    const day = new Date(t).toISOString().split('T')[0];
-    if (!dailyTotals[day]) dailyTotals[day] = 0;
-    dailyTotals[day] += hourlyRain[i];
-  });
-  return Object.values(dailyTotals);
+let weatherChart = null;
+const CACHE_KEY = 'weatherData';
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+function lazyLoadWeatherChart() {
+  const el = document.getElementById('weather-chart');
+  if (!el) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        loadWeatherData();
+        obs.unobserve(el); // Stop observing
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(el);
 }
 
-async function fetchWeather() {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=13.4088&longitude=122.5615&timezone=auto&daily=weather_code,temperature_2m_max,temperature_2m_min,windspeed_10m_max&hourly=rain`;
-  const res = await fetch(url);
-  const data = await res.json();
+// Load weather either from cache or API
+async function loadWeatherData() {
+  const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+  const now = Date.now();
 
-  const dailyRain = aggregateRainToDaily(data.hourly.time, data.hourly.rain);
-  renderWeatherChart(data, dailyRain);
+  if (cached && now - cached.timestamp < CACHE_TTL) {
+    renderWeatherChart(cached.data);
+    return;
+  }
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=13.4088&longitude=122.5615&timezone=auto&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: now }));
+    renderWeatherChart(data);
+  } catch (err) {
+    console.error('Weather API failed:', err);
+  }
 }
 
-function renderWeatherChart(data, dailyRain) {
+function renderWeatherChart(data) {
   const ctx = document.getElementById('weather-chart').getContext('2d');
-  const dailyDates = data.daily.time;
-  const codes = data.daily.weather_code;
-  const severities = codes.map(c => weatherCodeMap[c]?.severity || 1);
+
+  const dailyDates = data.daily.time.map(d =>
+    new Date(d).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })
+  );
+  const weatherSeverities = data.daily.weather_code.map(c => weatherCodeMap[c]?.severity || 1);
+  const dailyRain = data.daily.rain_sum;
   const maxTemps = data.daily.temperature_2m_max;
   const minTemps = data.daily.temperature_2m_min;
   const windSpeeds = data.daily.windspeed_10m_max;
 
-  new Chart(ctx, {
+  if (weatherChart) weatherChart.destroy();
+
+  weatherChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dailyDates.map(d =>
-        new Date(d).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })
-      ),
+      labels: dailyDates,
       datasets: [
-        { label: 'Weather Severity', data: severities, borderColor: '#FFA500', backgroundColor: 'rgba(255,165,0,0.2)', fill: true, tension: 0.3 },
+        { label: 'Weather Severity', data: weatherSeverities, borderColor: '#FFA500', backgroundColor: 'rgba(255,165,0,0.2)', fill: true, tension: 0.3 },
         { label: 'Daily Rain (mm)', data: dailyRain, borderColor: '#00BFFF', backgroundColor: 'rgba(0,191,255,0.2)', fill: true, tension: 0.3 },
         { label: 'Max Temp (°C)', data: maxTemps, borderColor: '#FF4500', fill: false, tension: 0.3 },
         { label: 'Min Temp (°C)', data: minTemps, borderColor: '#1E90FF', fill: false, tension: 0.3 },
@@ -72,7 +96,10 @@ function renderWeatherChart(data, dailyRain) {
           callbacks: {
             label: function(context) {
               const datasetLabel = context.dataset.label;
-              return `${datasetLabel}: ${context.raw.toFixed(1)} ${datasetLabel.includes('Temp') ? '°C' : datasetLabel.includes('Wind') ? 'km/h' : 'mm'}`;
+              return `${datasetLabel}: ${context.raw.toFixed(1)} ${
+                datasetLabel.includes('Temp') ? '°C' :
+                datasetLabel.includes('Wind') ? 'km/h' : 'mm'
+              }`;
             }
           }
         },
@@ -86,4 +113,5 @@ function renderWeatherChart(data, dailyRain) {
   });
 }
 
-fetchWeather();
+// Initialize lazy loading
+lazyLoadWeatherChart();
