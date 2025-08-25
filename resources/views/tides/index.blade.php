@@ -36,34 +36,39 @@
       </div>
 
       <!-- KPI Cards -->
-      <div class="grid sm:grid-cols-3 gap-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="text-sm text-slate-500">Next High</div>
-            <div class="kpi" id="next-high-value">-- m</div>
-            <p class="text-xs text-slate-500" id="next-high-time">--</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <div class="text-sm text-slate-500">Next Low</div>
-            <div class="kpi" id="next-low-value">-- m</div>
-            <p class="text-xs text-slate-500" id="next-low-time">--</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <div class="text-sm text-slate-500">Range</div>
-            <div class="kpi" id="tide-range">-- m</div>
-            <p class="text-xs text-slate-500">Daily</p>
-          </div>
-        </div>
-      </div>
+<div class="grid sm:grid-cols-3 gap-4" 
+     x-show="showData" 
+     x-transition.opacity.duration.300ms>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-sm text-slate-500">Next High</div>
+      <div class="kpi" id="next-high-value">-- m</div>
+      <p class="text-xs text-slate-500" id="next-high-time">--</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-sm text-slate-500">Next Low</div>
+      <div class="kpi" id="next-low-value">-- m</div>
+      <p class="text-xs text-slate-500" id="next-low-time">--</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="text-sm text-slate-500">Range</div>
+      <div class="kpi" id="tide-range">-- m</div>
+      <p class="text-xs text-slate-500">Daily</p>
+    </div>
+  </div>
+</div>
 
-      <!-- Chart -->
-      <div class="h-56 sm:h-72 lg:h-96 rounded-lg bg-slate-100 dark:bg-slate-800 p-2">
-        <canvas id="tideChartFull"></canvas>
-      </div>
+<!-- Chart -->
+<div class="h-56 sm:h-72 lg:h-96 rounded-lg bg-slate-100 dark:bg-slate-800 p-2"
+     x-show="showData" 
+     x-transition.scale.opacity.duration.300ms>
+  <canvas id="tideChartFull"></canvas>
+</div>
+
 
       <p class="text-xs text-slate-500 mt-2">
         High tide and Low Tide Data by 

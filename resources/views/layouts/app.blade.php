@@ -24,7 +24,8 @@
   ])
 </head>
 
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 overflow-y-auto">
+<body class="h-screen w-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 overflow-hidden">
+
 
   <!-- Topbar -->
   <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/70 backdrop-blur border-b border-slate-200/70 dark:border-slate-800">

@@ -100,13 +100,13 @@ window.updateTideChart = function(data) {
 };
 
 // 🔹 Alpine.js Component
-// 🔹 Alpine Component for Tides Page
 window.tideApp = function() {
     return {
         lat: 14.5995,
         lon: 120.9842,
         selectedStation: '',
         stations: [],
+        showData: true, // 👈 for animation toggle
 
         async init() {
             try {
@@ -117,28 +117,56 @@ window.tideApp = function() {
             }
         },
 
-        setStation(event) {
+        async setStation(event) {
             const index = event.target.value;
-            if (index === '') return;
+
+            if (index === '') {
+                // 🔹 Start fade-out animation
+                this.showData = false;
+
+                setTimeout(() => {
+                    // Reset values after fade-out
+                    this.selectedStation = '';
+                    this.lat = 14.5995;
+                    this.lon = 120.9842;
+
+                    document.getElementById("next-high-value").textContent = '--';
+                    document.getElementById("next-high-time").textContent = '--';
+                    document.getElementById("next-low-value").textContent = '--';
+                    document.getElementById("next-low-time").textContent = '--';
+                    document.getElementById("tide-range").textContent = '--';
+
+                    if (window.tideChart) {
+                        window.tideChart.destroy();
+                        window.tideChart = null;
+                    }
+
+                    localStorage.removeItem("tideStation");
+
+                    // 🔹 Fade back in after reset
+                    this.showData = true;
+                }, 300); // matches Tailwind transition duration
+                return;
+            }
+
+            // 🔹 Normal flow
             const s = this.stations[index];
             this.lat = s.Latitude;
             this.lon = s.Longitude;
 
-            loadTideData(this.lat, this.lon).then(data => {
-                if (data) {
-                    // Save selection for dashboard
-                    localStorage.setItem('tideStation', JSON.stringify({
-                        station: s.Station,
-                        data: data
-                    }));
-
-                    // Update immediately if card is visible
-                    updateDashboardTide(s.Station, data);
-                }
-            });
+            const data = await loadTideData(this.lat, this.lon);
+            if (data) {
+                localStorage.setItem('tideStation', JSON.stringify({
+                    station: s.Station,
+                    data: data
+                }));
+                updateDashboardTide(s.Station, data);
+            }
         }
     }
 }
+
+
 
 
 // --- Save cleaned tide data for localStorage ---
