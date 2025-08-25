@@ -4,77 +4,35 @@
 <div class="grid grid-cols-12 gap-6">
  
 
-<!-- KPIs -->
-<div class="col-span-12 md:col-span-4 card">
-    <div class="card-head">Tide — Manila Bay</div>
-    <div class="card-body">
-        <div class="kpi"></div> <!-- will be filled by JS -->
-
-      <p class="text-sm text-slate-500 next-high"></p> <!-- next high tide -->
-       <p class="text-sm text-slate-500 next-low"></p> <!-- next low tide -->
-
-       <div class="mt-2">
-           <span class="badge-warn">Near threshold</span>
-       </div>
-
-        <!-- Chart container -->
-        <div class="mt-4">
-          <p class="text-xs text-slate-500 mt-2">High tide and Low Tide Data by <a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a></p>
-            <canvas id="tideChart" height="250"></canvas>      
-        </div>   
-
-        
-    </div>
-</div>
-
-
-<div class="col-span-12 md:col-span-8 card">
-  <div class="card-head">Detailed Weather & Live Radar — Philippines</div>
+<div class="col-span-12 card w-full">
+  <div class="card-head text-xl font-semibold">
+    Detailed Weather & Live Radar — Philippines
+  </div>
   <div class="card-body">
-    <!-- Radar Map -->
-     
-    <div id="radar-map" style="height: 300px; margin-bottom: 20px;"></div>
+    
+    <!-- Radar Map (full width, taller height) -->
+    <div id="radar-map" style="height: 500px; margin-bottom: 30px;" class="rounded-lg shadow"></div>
 
-   <div id="weather-chart-container" style="width:100%;">
-      <canvas id="weather-chart" width="1000" height="300"></canvas>
+    <!-- Weather Chart -->
+    <div id="weather-chart-container" class="w-full">
+      <canvas id="weather-chart" height="400"></canvas>
     </div>
-    <p class="text-xs text-slate-500 mt-2">Weather data by<a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a>
+
+    <!-- Attribution -->
+    <p class="text-xs text-slate-500 mt-4">
+      Weather data by 
+      <a href="https://open-meteo.com" target="_blank" class="text-blue-500">Open-Meteo</a>
     </p>
   </div>
-
-  
-  
 </div>
-
-
-<div class="col-span-12 md:col-span-4 card">
-  <div class="card-head">Dam — Angat</div>
-  <div class="card-body">
-    <div id="angat-level" class="kpi">-- m</div>
-    <p class="text-sm text-slate-500">Normal High Water Level: <span id="angat-normal">--</span> m</p>
-    <div class="mt-2"><span id="angat-status" class="badge-warn">Loading...</span></div>
-    <div class="mt-4 h-22 rounded-lg bg-gradient-to-t from-amber-100 to-white dark:from-amber-900/30 dark:to-transparent"></div>
-  </div>
-</div>
-
-
-<!-- Map + Manila Bay Map -->
-<div class="col-span-12 lg:col-span-8 card">
-    <div class="card-head">Map (Manila Bay)</div>
-    <div class="card-body">
-        <div id="manila-bay-map" class="h-50 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
-            <!-- Leaflet map will render here -->
-        </div>
-    </div>
-</div>
-
-
 
 
 <script src="{{ asset('js/radar.js') }}"></script>
 <!-- Include your external weather JS -->
 <script src="weather.js"></script>
 <script src="{{ asset('js/dam.js') }}"></script>
+<script src="{{ asset('js/tide.js') }}"></script>
+
 
 
 <!-- Skycons JS -->
