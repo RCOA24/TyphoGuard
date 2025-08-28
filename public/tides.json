@@ -1,680 +1,689 @@
-[
-  {
-    "Station": "Aguasa Bay",
-    "State": "Calabarzon",
-    "Latitude": 13.2833,
-    "Longitude": 122.516998
-  },
-  {
-    "Station": "Anilao",
-    "State": "Calabarzon",
-    "Latitude": 13.7667,
-    "Longitude": 120.917
-  },
-  {
-    "Station": "Anini-Y",
-    "State": "Western Visayas",
-    "Latitude": 10.4333,
-    "Longitude": 121.917
-  },
-  {
-    "Station": "Aparri",
-    "State": "Cagayan Valley",
-    "Latitude": 18.35,
-    "Longitude": 121.633003
-  },
-  {
-    "Station": "Apo Island",
-    "State": "Negros Oriental",
-    "Latitude": 12.6667,
-    "Longitude": 120.417
-  },
-  {
-    "Station": "Babuyan Island",
-    "State": "Cagayan Valley",
-    "Latitude": 19.5667,
-    "Longitude": 121.932999
-  },
-  {
-    "Station": "Bacolod",
-    "State": "Western Visayas",
-    "Latitude": 10.6833,
-    "Longitude": 122.949997
-  },
-  {
-    "Station": "Bagatao Island",
-    "State": "Bicol",
-    "Latitude": 12.8333,
-    "Longitude": 123.800003
-  },
-  {
-    "Station": "Bais",
-    "State": "Central Visayas",
-    "Latitude": 9.6,
-    "Longitude": 123.133003
-  },
-  {
-    "Station": "Balabac",
-    "State": "MIMAROPA",
-    "Latitude": 8,
-    "Longitude": 117.067001
-  },
-  {
-    "Station": "Balamban Bay",
-    "State": "Central Visayas",
-    "Latitude": 10.5,
-    "Longitude": 123.717003
-  },
-  {
-    "Station": "Balas",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 6.6833,
-    "Longitude": 122.133003
-  },
-  {
-    "Station": "Baler Bay",
-    "State": "Central Luzon",
-    "Latitude": 15.75,
-    "Longitude": 121.583
-  },
-  {
-    "Station": "Banate",
-    "State": "Western Visayas",
-    "Latitude": 11,
-    "Longitude": 122.817001
-  },
-  {
-    "Station": "Bantayan Island",
-    "State": "Central Visayas",
-    "Latitude": 11.1667,
-    "Longitude": 123.717003
-  },
-  {
-    "Station": "Basbas Channel",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.35,
-    "Longitude": 120.217003
-  },
-  {
-    "Station": "Batuan Bay",
-    "State": "Bicol",
-    "Latitude": 12.4167,
-    "Longitude": 123.766998
-  },
-  {
-    "Station": "Baybay",
-    "State": "Eastern Visayas",
-    "Latitude": 10.6833,
-    "Longitude": 124.800003
-  },
-  {
-    "Station": "Biri Island",
-    "State": "Eastern Visayas",
-    "Latitude": 12.65,
-    "Longitude": 124.366997
-  },
-  {
-    "Station": "Bolinao",
-    "State": "Ilocos Region",
-    "Latitude": 16.4,
-    "Longitude": 119.900002
-  },
-  {
-    "Station": "Bonbonon",
-    "State": "Negros Oriental",
-    "Latitude": 9.05,
-    "Longitude": 123.116997
-  },
-  {
-    "Station": "Bulan Island",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 6.15,
-    "Longitude": 121.833
-  },
-  {
-    "Station": "Busok Busok",
-    "State": "Sultan Kudarat",
-    "Latitude": 16.233299,
-    "Longitude": 122.133003
-  },
-  {
-    "Station": "Butag Bay",
-    "State": "Bicol",
-    "Latitude": 12.6167,
-    "Longitude": 123.932999
-  },
-  {
-    "Station": "Calapan",
-    "State": "MIMAROPA",
-    "Latitude": 13.4333,
-    "Longitude": 121.182999
-  },
-  {
-    "Station": "Campomanes Bay",
-    "State": "Western Visayas",
-    "Latitude": 9.7,
-    "Longitude": 122.417
-  },
-  {
-    "Station": "Capiz Landing",
-    "State": "Western Visayas",
-    "Latitude": 11.6,
-    "Longitude": 122.717003
-  },
-  {
-    "Station": "Caraga",
-    "State": "Davao Region",
-    "Latitude": 7.3,
-    "Longitude": 126.583
-  },
-  {
-    "Station": "Cebu",
-    "State": "Central Visayas",
-    "Latitude": 10.3,
-    "Longitude": 123.917
-  },
-  {
-    "Station": "Claveria Bay",
-    "State": "Cagayan Valley",
-    "Latitude": 18.616699,
-    "Longitude": 121.083
-  },
-  {
-    "Station": "Corregidor Island",
-    "State": "Calabarzon",
-    "Latitude": 14.3833,
-    "Longitude": 120.599998
-  },
-  {
-    "Station": "Currimao",
-    "State": "Ilocos Region",
-    "Latitude": 17.9833,
-    "Longitude": 120.483
-  },
-  {
-    "Station": "Dahikan Bay",
-    "State": "Caraga",
-    "Latitude": 9.45,
-    "Longitude": 125.932999
-  },
-  {
-    "Station": "Dapitan",
-    "State": "Zamboanga Peninsula",
-    "Latitude": 8.6667,
-    "Longitude": 123.417
-  },
-  {
-    "Station": "Dassalan Island",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 6.7333,
-    "Longitude": 121.467003
-  },
-  {
-    "Station": "Davao-B",
-    "State": "Davao Region",
-    "Latitude": 7.11667,
-    "Longitude": 125.667
-  },
-  {
-    "Station": "Diapitan Bay",
-    "State": "Central Luzon",
-    "Latitude": 16.4,
-    "Longitude": 122.217003
-  },
-  {
-    "Station": "Estancia",
-    "State": "Western Visayas",
-    "Latitude": 11.4667,
-    "Longitude": 123.150002
-  },
-  {
-    "Station": "Gallo Malo Channel",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.1333,
-    "Longitude": 120.233002
-  },
-  {
-    "Station": "Garcia Hernandez",
-    "State": "Central Visayas",
-    "Latitude": 9.6167,
-    "Longitude": 124.300003
-  },
-  {
-    "Station": "Guinayangan",
-    "State": "Calabarzon",
-    "Latitude": 13.9,
-    "Longitude": 122.449997
-  },
-  {
-    "Station": "Halsey Harbour",
-    "State": "MIMAROPA",
-    "Latitude": 11.8,
-    "Longitude": 119.949997
-  },
-  {
-    "Station": "Hilaban Island",
-    "State": "Eastern Visayas",
-    "Latitude": 12.0333,
-    "Longitude": 125.567001
-  },
-  {
-    "Station": "Himamaylan",
-    "State": "Western Visayas",
-    "Latitude": 10.1,
-    "Longitude": 122.866997
-  },
-  {
-    "Station": "Hinatuan",
-    "State": "Caraga",
-    "Latitude": 8.3667,
-    "Longitude": 126.333
-  },
-  {
-    "Station": "Hinunangan Bay",
-    "State": "Southern Leyte",
-    "Latitude": 10.4,
-    "Longitude": 125.199997
-  },
-  {
-    "Station": "Hook Bay",
-    "State": "Calabarzon",
-    "Latitude": 14.95,
-    "Longitude": 121.833
-  },
-  {
-    "Station": "Iligan",
-    "State": "Northern Mindanao",
-    "Latitude": 8.2333,
-    "Longitude": 124.233002
-  },
-  {
-    "Station": "Iloilo",
-    "State": "Western Visayas",
-    "Latitude": 10.7,
-    "Longitude": 122.583
-  },
-  {
-    "Station": "Island Bay",
-    "State": "MIMAROPA",
-    "Latitude": 9.1,
-    "Longitude": 118.116997
-  },
-  {
-    "Station": "Kabgan Island",
-    "State": "Bicol",
-    "Latitude": 13.7667,
-    "Longitude": 123.266998
-  },
-  {
-    "Station": "Lahatlahat Island",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.65,
-    "Longitude": 120.282997
-  },
-  {
-    "Station": "Laoang",
-    "State": "Silangang Visayas",
-    "Latitude": 12.5667,
-    "Longitude": 125.016998
-  },
-  {
-    "Station": "Legaspi",
-    "State": "Bicol",
-    "Latitude": 13.15,
-    "Longitude": 123.767
-  },
-  {
-    "Station": "Liloan",
-    "State": "Eastern Visayas",
-    "Latitude": 10.15,
-    "Longitude": 125.116997
-  },
-  {
-    "Station": "Linapakan Island",
-    "State": "MIMAROPA",
-    "Latitude": 11.4667,
-    "Longitude": 119.766998
-  },
-  {
-    "Station": "Lucena",
-    "State": "Calabarzon",
-    "Latitude": 13.9,
-    "Longitude": 121.599998
-  },
-  {
-    "Station": "Maasin",
-    "State": "Eastern Visayas",
-    "Latitude": 10.1333,
-    "Longitude": 124.833
-  },
-  {
-    "Station": "Maestre de Campo Island",
-    "State": "MIMAROPA",
-    "Latitude": 12.9167,
-    "Longitude": 121.733002
-  },
-  {
-    "Station": "Maimbung",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.9333,
-    "Longitude": 121.032997
-  },
-  {
-    "Station": "Mambajao",
-    "State": "Northern Mindanao",
-    "Latitude": 9.25,
-    "Longitude": 124.717003
-  },
-  {
-    "Station": "Manila",
-    "State": "National Capital Region",
-    "Latitude": 14.5833,
-    "Longitude": 120.967003
-  },
-  {
-    "Station": "Mansalay",
-    "State": "MIMAROPA",
-    "Latitude": 12.5167,
-    "Longitude": 121.432999
-  },
-  {
-    "Station": "Margosatubig",
-    "State": "Zamboanga Peninsula",
-    "Latitude": 7.5833,
-    "Longitude": 123.167
-  },
-  {
-    "Station": "Moalbual",
-    "State": "Central Visayas",
-    "Latitude": 9.9333,
-    "Longitude": 123.400002
-  },
-  {
-    "Station": "Musa Bay",
-    "State": "Cagayan Valley",
-    "Latitude": 18.866699,
-    "Longitude": 121.282997
-  },
-  {
-    "Station": "Nagabungan Bay",
-    "State": "Ilocos Region",
-    "Latitude": 18.483299,
-    "Longitude": 120.567001
-  },
-  {
-    "Station": "Nasipit Harbour",
-    "State": "Caraga",
-    "Latitude": 8.9833,
-    "Longitude": 125.333
-  },
-  {
-    "Station": "Palompon",
-    "State": "Eastern Visayas",
-    "Latitude": 11.05,
-    "Longitude": 124.383003
-  },
-  {
-    "Station": "Paluan",
-    "State": "MIMAROPA",
-    "Latitude": 13.4167,
-    "Longitude": 120.467003
-  },
-  {
-    "Station": "Pasacao",
-    "State": "Bicol",
-    "Latitude": 13.5167,
-    "Longitude": 123.050003
-  },
-  {
-    "Station": "Pearl Bank",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.85,
-    "Longitude": 119.733002
-  },
-  {
-    "Station": "Plaridel",
-    "State": "Northern Mindanao",
-    "Latitude": 8.6167,
-    "Longitude": 123.717003
-  },
-  {
-    "Station": "Pollok Harbour",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 7.35,
-    "Longitude": 124.217003
-  },
-  {
-    "Station": "Port Anajao",
-    "State": "Bicol",
-    "Latitude": 13.95,
-    "Longitude": 124.333
-  },
-  {
-    "Station": "Port Balanacan",
-    "State": "MIMAROPA",
-    "Latitude": 13.5333,
-    "Longitude": 121.866997
-  },
-  {
-    "Station": "Port Barrera",
-    "State": "Bicol",
-    "Latitude": 12.5333,
-    "Longitude": 123.383003
-  },
-  {
-    "Station": "Port Bicobian",
-    "State": "Cagayan Valley",
-    "Latitude": 17.2833,
-    "Longitude": 122.417
-  },
-  {
-    "Station": "Port Bongao",
-    "State": "Tawi-Tawi",
-    "Latitude": 5.0333,
-    "Longitude": 119.766998
-  },
-  {
-    "Station": "Port Canoan (Larena)",
-    "State": "Central Visayas",
-    "Latitude": 9.25,
-    "Longitude": 123.583
-  },
-  {
-    "Station": "Port Holland",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 6.55,
-    "Longitude": 121.866997
-  },
-  {
-    "Station": "Port Lampon (Real Port)",
-    "State": "Calabarzon",
-    "Latitude": 14.6667,
-    "Longitude": 121.616997
-  },
-  {
-    "Station": "Port Lebak",
-    "State": "Region XII",
-    "Latitude": 6.5333,
-    "Longitude": 124.050003
-  },
-  {
-    "Station": "Port Pusgo",
-    "State": "Calabarzon",
-    "Latitude": 13.5333,
-    "Longitude": 122.599998
-  },
-  {
-    "Station": "Port S. Vicente",
-    "State": "Cagayan Valley",
-    "Latitude": 18.516701,
-    "Longitude": 122.133003
-  },
-  {
-    "Station": "Port San Pio Quinto",
-    "State": "Cagayan Valley",
-    "Latitude": 18.9,
-    "Longitude": 121.866997
-  },
-  {
-    "Station": "Port Santa Maria",
-    "State": "Zamboanga Peninsula",
-    "Latitude": 7.7667,
-    "Longitude": 122.116997
-  },
-  {
-    "Station": "Port Tilic",
-    "State": "MIMAROPA",
-    "Latitude": 13.8167,
-    "Longitude": 120.199997
-  },
-  {
-    "Station": "Puerto Princesa",
-    "State": "Palawan",
-    "Latitude": 10.1,
-    "Longitude": 125.483002
-  },
-  {
-    "Station": "Puerto Princesa",
-    "State": "MIMAROPA",
-    "Latitude": 9.75,
-    "Longitude": 118.733
-  },
-  {
-    "Station": "Romblon Island",
-    "State": "MIMAROPA",
-    "Latitude": 12.5833,
-    "Longitude": 122.266998
-  },
-  {
-    "Station": "Salomague Harbour",
-    "State": "Ilocos Region",
-    "Latitude": 17.7833,
-    "Longitude": 120.417
-  },
-  {
-    "Station": "San Carlos",
-    "State": "Western Visayas",
-    "Latitude": 10.4833,
-    "Longitude": 123.417
-  },
-  {
-    "Station": "San Fernando",
-    "State": "Ilocos Region",
-    "Latitude": 16.616699,
-    "Longitude": 120.300003
-  },
-  {
-    "Station": "San Jose",
-    "State": "MIMAROPA",
-    "Latitude": 12.3333,
-    "Longitude": 121.083
-  },
-  {
-    "Station": "San Pascual",
-    "State": "Bicol",
-    "Latitude": 13.1333,
-    "Longitude": 122.983002
-  },
-  {
-    "Station": "Santa Cruz",
-    "State": "Central Luzon",
-    "Latitude": 15.7667,
-    "Longitude": 119.900002
-  },
-  {
-    "Station": "Sarangani Island",
-    "State": "Davao Region",
-    "Latitude": 5.4167,
-    "Longitude": 125.449997
-  },
-  {
-    "Station": "Sigaboy",
-    "State": "Davao Region",
-    "Latitude": 6.6333,
-    "Longitude": 126.067001
-  },
-  {
-    "Station": "Sisiran Bay",
-    "State": "Kabikulan",
-    "Latitude": 13.9333,
-    "Longitude": 123.650002
-  },
-  {
-    "Station": "South Ubian Island",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.2,
-    "Longitude": 120.5
-  },
-  {
-    "Station": "Sual",
-    "State": "Ilocos Region",
-    "Latitude": 16.0667,
-    "Longitude": 120.099998
-  },
-  {
-    "Station": "Subic Bay",
-    "State": "Central Luzon",
-    "Latitude": 14.7667,
-    "Longitude": 120.25
-  },
-  {
-    "Station": "Surigao",
-    "State": "Caraga",
-    "Latitude": 9.7833,
-    "Longitude": 125.5
-  },
-  {
-    "Station": "Tabaco",
-    "State": "Bicol",
-    "Latitude": 13.3667,
-    "Longitude": 123.733002
-  },
-  {
-    "Station": "Tandungan Channel",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.2167,
-    "Longitude": 120.317001
-  },
-  {
-    "Station": "Tapul Island",
-    "State": "Autonomous Region in Muslim Mindanao",
-    "Latitude": 5.7,
-    "Longitude": 120.883003
-  },
-  {
-    "Station": "Tibiao",
-    "State": "Western Visayas",
-    "Latitude": 11.2833,
-    "Longitude": 122.032997
-  },
-  {
-    "Station": "Tikauan Point",
-    "State": "Zamboanga Peninsula",
-    "Latitude": 7.75,
-    "Longitude": 122.733299
-  },
-  {
-    "Station": "Tumindao Island",
-    "State": "Tawi-Tawi",
-    "Latitude": 4.7833,
-    "Longitude": 119.432999
-  },
-  {
-    "Station": "Ulugan Bay",
-    "State": "MIMAROPA",
-    "Latitude": 10.0667,
-    "Longitude": 118.766998
-  },
-  {
-    "Station": "Umiray River Entrance",
-    "State": "Calabarzon",
-    "Latitude": 15.2,
-    "Longitude": 121.432999
-  },
-  {
-    "Station": "Zamboanga",
-    "State": "Zamboanga Peninsula",
-    "Latitude": 6.9,
-    "Longitude": 122.067001
-  }
-]
+{
+  "regions": [
+    {
+      "region": "Autonomous Region in Muslim Mindanao",
+      "stations": [
+        {
+          "station": "Balas",
+          "lat": 6.6833,
+          "lon": 122.133003
+        },
+        {
+          "station": "Basbas Channel",
+          "lat": 5.35,
+          "lon": 120.217003
+        },
+        {
+          "station": "Bulan Island",
+          "lat": 6.15,
+          "lon": 121.833
+        },
+        {
+          "station": "Dassalan Island",
+          "lat": 6.7333,
+          "lon": 121.467003
+        },
+        {
+          "station": "Gallo Malo Channel",
+          "lat": 5.1333,
+          "lon": 120.233002
+        },
+        {
+          "station": "Lahatlahat Island",
+          "lat": 5.65,
+          "lon": 120.282997
+        },
+        {
+          "station": "Maimbung",
+          "lat": 5.9333,
+          "lon": 121.032997
+        },
+        {
+          "station": "Pearl Bank",
+          "lat": 5.85,
+          "lon": 119.733002
+        },
+        {
+          "station": "Pollok Harbour",
+          "lat": 7.35,
+          "lon": 124.217003
+        },
+        {
+          "station": "Port Holland",
+          "lat": 6.55,
+          "lon": 121.866997
+        },
+        {
+          "station": "South Ubian Island",
+          "lat": 5.2,
+          "lon": 120.5
+        },
+        {
+          "station": "Tandungan Channel",
+          "lat": 5.2167,
+          "lon": 120.317001
+        },
+        {
+          "station": "Tapul Island",
+          "lat": 5.7,
+          "lon": 120.883003
+        }
+      ]
+    },
+    {
+      "region": "Bicol",
+      "stations": [
+        {
+          "station": "Bagatao Island",
+          "lat": 12.8333,
+          "lon": 123.800003
+        },
+        {
+          "station": "Batuan Bay",
+          "lat": 12.4167,
+          "lon": 123.766998
+        },
+        {
+          "station": "Butag Bay",
+          "lat": 12.6167,
+          "lon": 123.932999
+        },
+        {
+          "station": "Kabgan Island",
+          "lat": 13.7667,
+          "lon": 123.266998
+        },
+        {
+          "station": "Legaspi",
+          "lat": 13.15,
+          "lon": 123.767
+        },
+        {
+          "station": "Pasacao",
+          "lat": 13.5167,
+          "lon": 123.050003
+        },
+        {
+          "station": "Port Anajao",
+          "lat": 13.95,
+          "lon": 124.333
+        },
+        {
+          "station": "Port Barrera",
+          "lat": 12.5333,
+          "lon": 123.383003
+        },
+        {
+          "station": "San Pascual",
+          "lat": 13.1333,
+          "lon": 122.983002
+        },
+        {
+          "station": "Tabaco",
+          "lat": 13.3667,
+          "lon": 123.733002
+        },
+        {
+          "station": "Nabua",
+          "lat": 13.4075,
+          "lon": 123.3724
+        }
+      ]
+    },
+    {
+      "region": "Cagayan Valley",
+      "stations": [
+        {
+          "station": "Aparri",
+          "lat": 18.35,
+          "lon": 121.633003
+        },
+        {
+          "station": "Babuyan Island",
+          "lat": 19.5667,
+          "lon": 121.932999
+        },
+        {
+          "station": "Claveria Bay",
+          "lat": 18.616699,
+          "lon": 121.083
+        },
+        {
+          "station": "Musa Bay",
+          "lat": 18.866699,
+          "lon": 121.282997
+        },
+        {
+          "station": "Port Bicobian",
+          "lat": 17.2833,
+          "lon": 122.417
+        },
+        {
+          "station": "Port S. Vicente",
+          "lat": 18.516701,
+          "lon": 122.133003
+        },
+        {
+          "station": "Port San Pio Quinto",
+          "lat": 18.9,
+          "lon": 121.866997
+        }
+      ]
+    },
+    {
+      "region": "Calabarzon",
+      "stations": [
+        {
+          "station": "Aguasa Bay",
+          "lat": 13.2833,
+          "lon": 122.516998
+        },
+        {
+          "station": "Anilao",
+          "lat": 13.7667,
+          "lon": 120.917
+        },
+        {
+          "station": "Corregidor Island",
+          "lat": 14.3833,
+          "lon": 120.599998
+        },
+        {
+          "station": "Guinayangan",
+          "lat": 13.9,
+          "lon": 122.449997
+        },
+        {
+          "station": "Hook Bay",
+          "lat": 14.95,
+          "lon": 121.833
+        },
+        {
+          "station": "Lucena",
+          "lat": 13.9,
+          "lon": 121.599998
+        },
+        {
+          "station": "Port Lampon (Real Port)",
+          "lat": 14.6667,
+          "lon": 121.616997
+        },
+        {
+          "station": "Port Pusgo",
+          "lat": 13.5333,
+          "lon": 122.599998
+        },
+        {
+          "station": "Umiray River Entrance",
+          "lat": 15.2,
+          "lon": 121.432999
+        }
+      ]
+    },
+    {
+      "region": "Caraga",
+      "stations": [
+        {
+          "station": "Dahikan Bay",
+          "lat": 9.45,
+          "lon": 125.932999
+        },
+        {
+          "station": "Hinatuan",
+          "lat": 8.3667,
+          "lon": 126.333
+        },
+        {
+          "station": "Nasipit Harbour",
+          "lat": 8.9833,
+          "lon": 125.333
+        },
+        {
+          "station": "Surigao",
+          "lat": 9.7833,
+          "lon": 125.5
+        }
+      ]
+    },
+    {
+      "region": "Central Luzon",
+      "stations": [
+        {
+          "station": "Baler Bay",
+          "lat": 15.75,
+          "lon": 121.583
+        },
+        {
+          "station": "Diapitan Bay",
+          "lat": 16.4,
+          "lon": 122.217003
+        },
+        {
+          "station": "Santa Cruz",
+          "lat": 15.7667,
+          "lon": 119.900002
+        },
+        {
+          "station": "Subic Bay",
+          "lat": 14.7667,
+          "lon": 120.25
+        }
+      ]
+    },
+    {
+      "region": "Central Visayas",
+      "stations": [
+        {
+          "station": "Bais",
+          "lat": 9.6,
+          "lon": 123.133003
+        },
+        {
+          "station": "Balamban Bay",
+          "lat": 10.5,
+          "lon": 123.717003
+        },
+        {
+          "station": "Bantayan Island",
+          "lat": 11.1667,
+          "lon": 123.717003
+        },
+        {
+          "station": "Cebu",
+          "lat": 10.3,
+          "lon": 123.917
+        },
+        {
+          "station": "Garcia Hernandez",
+          "lat": 9.6167,
+          "lon": 124.300003
+        },
+        {
+          "station": "Moalbual",
+          "lat": 9.9333,
+          "lon": 123.400002
+        },
+        {
+          "station": "Port Canoan (Larena)",
+          "lat": 9.25,
+          "lon": 123.583
+        }
+      ]
+    },
+    {
+      "region": "Davao Region",
+      "stations": [
+        {
+          "station": "Caraga",
+          "lat": 7.3,
+          "lon": 126.583
+        },
+        {
+          "station": "Davao-B",
+          "lat": 7.11667,
+          "lon": 125.667
+        },
+        {
+          "station": "Sarangani Island",
+          "lat": 5.4167,
+          "lon": 125.449997
+        },
+        {
+          "station": "Sigaboy",
+          "lat": 6.6333,
+          "lon": 126.067001
+        }
+      ]
+    },
+    {
+      "region": "Eastern Visayas",
+      "stations": [
+        {
+          "station": "Baybay",
+          "lat": 10.6833,
+          "lon": 124.800003
+        },
+        {
+          "station": "Biri Island",
+          "lat": 12.65,
+          "lon": 124.366997
+        },
+        {
+          "station": "Hilaban Island",
+          "lat": 12.0333,
+          "lon": 125.567001
+        },
+        {
+          "station": "Liloan",
+          "lat": 10.15,
+          "lon": 125.116997
+        },
+        {
+          "station": "Maasin",
+          "lat": 10.1333,
+          "lon": 124.833
+        },
+        {
+          "station": "Palompon",
+          "lat": 11.05,
+          "lon": 124.383003
+        }
+      ]
+    },
+    {
+      "region": "Ilocos Region",
+      "stations": [
+        {
+          "station": "Bolinao",
+          "lat": 16.4,
+          "lon": 119.900002
+        },
+        {
+          "station": "Currimao",
+          "lat": 17.9833,
+          "lon": 120.483
+        },
+        {
+          "station": "Nagabungan Bay",
+          "lat": 18.483299,
+          "lon": 120.567001
+        },
+        {
+          "station": "Salomague Harbour",
+          "lat": 17.7833,
+          "lon": 120.417
+        },
+        {
+          "station": "San Fernando",
+          "lat": 16.616699,
+          "lon": 120.300003
+        },
+        {
+          "station": "Sual",
+          "lat": 16.0667,
+          "lon": 120.099998
+        }
+      ]
+    },
+    {
+      "region": "Kabikulan",
+      "stations": [
+        {
+          "station": "Sisiran Bay",
+          "lat": 13.9333,
+          "lon": 123.650002
+        }
+      ]
+    },
+    {
+      "region": "MIMAROPA",
+      "stations": [
+        {
+          "station": "Balabac",
+          "lat": 8.0,
+          "lon": 117.067001
+        },
+        {
+          "station": "Calapan",
+          "lat": 13.4333,
+          "lon": 121.182999
+        },
+        {
+          "station": "Halsey Harbour",
+          "lat": 11.8,
+          "lon": 119.949997
+        },
+        {
+          "station": "Island Bay",
+          "lat": 9.1,
+          "lon": 118.116997
+        },
+        {
+          "station": "Linapakan Island",
+          "lat": 11.4667,
+          "lon": 119.766998
+        },
+        {
+          "station": "Maestre de Campo Island",
+          "lat": 12.9167,
+          "lon": 121.733002
+        },
+        {
+          "station": "Mansalay",
+          "lat": 12.5167,
+          "lon": 121.432999
+        },
+        {
+          "station": "Paluan",
+          "lat": 13.4167,
+          "lon": 120.467003
+        },
+        {
+          "station": "Port Balanacan",
+          "lat": 13.5333,
+          "lon": 121.866997
+        },
+        {
+          "station": "Port Tilic",
+          "lat": 13.8167,
+          "lon": 120.199997
+        },
+        {
+          "station": "Puerto Princesa",
+          "lat": 9.75,
+          "lon": 118.733
+        },
+        {
+          "station": "Romblon Island",
+          "lat": 12.5833,
+          "lon": 122.266998
+        },
+        {
+          "station": "San Jose",
+          "lat": 12.3333,
+          "lon": 121.083
+        },
+        {
+          "station": "Ulugan Bay",
+          "lat": 10.0667,
+          "lon": 118.766998
+        }
+      ]
+    },
+    {
+      "region": "National Capital Region",
+      "stations": [
+        {
+          "station": "Manila",
+          "lat": 14.5833,
+          "lon": 120.967003
+        }
+      ]
+    },
+    {
+      "region": "Negros Oriental",
+      "stations": [
+        {
+          "station": "Apo Island",
+          "lat": 12.6667,
+          "lon": 120.417
+        },
+        {
+          "station": "Bonbonon",
+          "lat": 9.05,
+          "lon": 123.116997
+        }
+      ]
+    },
+    {
+      "region": "Northern Mindanao",
+      "stations": [
+        {
+          "station": "Iligan",
+          "lat": 8.2333,
+          "lon": 124.233002
+        },
+        {
+          "station": "Mambajao",
+          "lat": 9.25,
+          "lon": 124.717003
+        },
+        {
+          "station": "Plaridel",
+          "lat": 8.6167,
+          "lon": 123.717003
+        }
+      ]
+    },
+    {
+      "region": "Palawan",
+      "stations": [
+        {
+          "station": "Puerto Princesa",
+          "lat": 10.1,
+          "lon": 125.483002
+        }
+      ]
+    },
+    {
+      "region": "Region XII",
+      "stations": [
+        {
+          "station": "Port Lebak",
+          "lat": 6.5333,
+          "lon": 124.050003
+        }
+      ]
+    },
+    {
+      "region": "Silangang Visayas",
+      "stations": [
+        {
+          "station": "Laoang",
+          "lat": 12.5667,
+          "lon": 125.016998
+        }
+      ]
+    },
+    {
+      "region": "Southern Leyte",
+      "stations": [
+        {
+          "station": "Hinunangan Bay",
+          "lat": 10.4,
+          "lon": 125.199997
+        }
+      ]
+    },
+    {
+      "region": "Sultan Kudarat",
+      "stations": [
+        {
+          "station": "Busok Busok",
+          "lat": 16.233299,
+          "lon": 122.133003
+        }
+      ]
+    },
+    {
+      "region": "Tawi-Tawi",
+      "stations": [
+        {
+          "station": "Port Bongao",
+          "lat": 5.0333,
+          "lon": 119.766998
+        },
+        {
+          "station": "Tumindao Island",
+          "lat": 4.7833,
+          "lon": 119.432999
+        }
+      ]
+    },
+    {
+      "region": "Western Visayas",
+      "stations": [
+        {
+          "station": "Anini-Y",
+          "lat": 10.4333,
+          "lon": 121.917
+        },
+        {
+          "station": "Bacolod",
+          "lat": 10.6833,
+          "lon": 122.949997
+        },
+        {
+          "station": "Banate",
+          "lat": 11.0,
+          "lon": 122.817001
+        },
+        {
+          "station": "Campomanes Bay",
+          "lat": 9.7,
+          "lon": 122.417
+        },
+        {
+          "station": "Capiz Landing",
+          "lat": 11.6,
+          "lon": 122.717003
+        },
+        {
+          "station": "Estancia",
+          "lat": 11.4667,
+          "lon": 123.150002
+        },
+        {
+          "station": "Himamaylan",
+          "lat": 10.1,
+          "lon": 122.866997
+        },
+        {
+          "station": "Iloilo",
+          "lat": 10.7,
+          "lon": 122.583
+        },
+        {
+          "station": "San Carlos",
+          "lat": 10.4833,
+          "lon": 123.417
+        },
+        {
+          "station": "Tibiao",
+          "lat": 11.2833,
+          "lon": 122.032997
+        }
+      ]
+    },
+    {
+      "region": "Zamboanga Peninsula",
+      "stations": [
+        {
+          "station": "Dapitan",
+          "lat": 8.6667,
+          "lon": 123.417
+        },
+        {
+          "station": "Margosatubig",
+          "lat": 7.5833,
+          "lon": 123.167
+        },
+        {
+          "station": "Port Santa Maria",
+          "lat": 7.7667,
+          "lon": 122.116997
+        },
+        {
+          "station": "Tikauan Point",
+          "lat": 7.75,
+          "lon": 122.733299
+        },
+        {
+          "station": "Zamboanga",
+          "lat": 6.9,
+          "lon": 122.067001
+        }
+      ]
+    }
+  ]
+}
