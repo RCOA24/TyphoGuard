@@ -97,8 +97,8 @@ async function getLocationName(lat, lon) {
 // -------- Alpine.js component --------
 window.tideApp = function () {
   return {
-    lat: 14.5995,
-    lon: 120.9842,
+    lat: '',
+    lon: '',
     selectedRegion: "",
     selectedStation: "",
     userLocation: "", // display label for live location
@@ -209,36 +209,42 @@ window.tideApp = function () {
     },
 
     async useMyLocation() {
-      if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
-        return;
-      }
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser.");
+    return;
+  }
 
-      this.loadingLocation = true;
+  this.loadingLocation = true;
 
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          this.lat = position.coords.latitude;
-          this.lon = position.coords.longitude;
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      // Clear previously selected region and station
+      this.selectedRegion = "";
+      this.selectedStation = "";
+      
+      // Set current coordinates
+      this.lat = position.coords.latitude;
+      this.lon = position.coords.longitude;
 
-          // x-model updates inputs automatically — no manual DOM update needed
-          this.userLocation = await getLocationName(this.lat, this.lon);
+      // Get location name
+      this.userLocation = await getLocationName(this.lat, this.lon);
 
-          // Show "Current Location" option in dropdown and select it
-          this.selectedStation = "user";
+      // Mark 'user' as selected station
+      this.selectedStation = "user";
 
-          const data = await loadTideData(this.lat, this.lon, this.date);
-          if (data) updateDashboardTide(this.userLocation, data);
+      // Load tide data
+      const data = await loadTideData(this.lat, this.lon, this.date);
+      if (data) updateDashboardTide(this.userLocation, data);
 
-          this.loadingLocation = false;
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          alert("Unable to retrieve your location.");
-          this.loadingLocation = false;
-        }
-      );
+      this.loadingLocation = false;
     },
+    (error) => {
+      console.error("Error getting location:", error);
+      alert("Unable to retrieve your location.");
+      this.loadingLocation = false;
+    }
+  );
+},
 
 async refreshData() {
   this.showData = false;
@@ -248,8 +254,8 @@ async refreshData() {
     this.selectedRegion = ""; 
     this.selectedStation = "";
     this.userLocation = "";
-    this.lat = 14.5995;
-    this.lon = 120.9842;
+    this.lat = '';
+    this.lon = '';
 
     // 🔄 Reset KPIs
     document.getElementById("next-high-value").textContent = "--";
