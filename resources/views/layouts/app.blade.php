@@ -11,15 +11,19 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
   @vite([
       'resources/css/app.css',
       'resources/js/app.js',
       'resources/js/ph-time.js',
       'resources/js/manila-bay-map.js',
       'resources/js/tide.js',
+      'resources/js/weather.js',
       'resources/css/radar.css',
       'resources/js/radar.js',
       'resources/js/weather.js',
+      'resources/js/dam.js',
+      
       
   ])
 </head>

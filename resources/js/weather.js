@@ -1,117 +1,157 @@
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Draggable } from "gsap/Draggable";
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, Draggable);
+
 const weatherCodeMap = {
-  0: { label: "Clear", color: "#FFD700", severity: 1 },
-  1: { label: "Mainly clear", color: "#FFE08A", severity: 1 },
-  2: { label: "Partly cloudy", color: "#C0C0C0", severity: 1 },
-  3: { label: "Overcast", color: "#808080", severity: 1 },
-  45: { label: "Fog", color: "#A9A9A9", severity: 1 },
-  48: { label: "Depositing rime fog", color: "#B0B0B0", severity: 1 },
-  51: { label: "Drizzle: Light", color: "#7EC8E3", severity: 2 },
-  53: { label: "Drizzle: Moderate", color: "#5AA6CF", severity: 2 },
-  55: { label: "Drizzle: Dense", color: "#2B82C2", severity: 3 },
-  61: { label: "Rain: Slight", color: "#3399FF", severity: 2 },
-  63: { label: "Rain: Moderate", color: "#007ACC", severity: 3 },
-  65: { label: "Rain: Heavy", color: "#005FA3", severity: 4 },
-  80: { label: "Rain showers: Slight", color: "#66CCFF", severity: 2 },
-  81: { label: "Rain showers: Moderate", color: "#3399FF", severity: 3 },
-  82: { label: "Rain showers: Violent", color: "#0066CC", severity: 4 },
-  95: { label: "Thunderstorm", color: "#e74242ff", severity: 5 }
+  0: { label: "Clear", color: "#FFD700", icon: "☀️" },
+  1: { label: "Mainly clear", color: "#FFE08A", icon: "🌤️" },
+  2: { label: "Partly cloudy", color: "#C0C0C0", icon: "⛅" },
+  3: { label: "Overcast", color: "#808080", icon: "☁️" },
+  45: { label: "Fog", color: "#A9A9A9", icon: "🌫️" },
+  48: { label: "Depositing rime fog", color: "#B0B0B0", icon: "🌫️" },
+  51: { label: "Drizzle: Light", color: "#7EC8E3", icon: "🌦️" },
+  53: { label: "Drizzle: Moderate", color: "#5AA6CF", icon: "🌧️" },
+  55: { label: "Drizzle: Dense", color: "#2B82C2", icon: "🌧️" },
+  61: { label: "Rain: Slight", color: "#3399FF", icon: "🌧️" },
+  63: { label: "Rain: Moderate", color: "#007ACC", icon: "🌧️" },
+  65: { label: "Rain: Heavy", color: "#005FA3", icon: "⛈️" },
+  80: { label: "Rain showers: Slight", color: "#66CCFF", icon: "🌦️" },
+  81: { label: "Rain showers: Moderate", color: "#3399FF", icon: "🌧️" },
+  82: { label: "Rain showers: Violent", color: "#0066CC", icon: "⛈️" },
+  95: { label: "Thunderstorm", color: "#e74242ff", icon: "🌩️" }
 };
 
-let weatherChart = null;
 const CACHE_KEY = 'weatherData';
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const CACHE_TTL = 10 * 60 * 1000;
 
-function lazyLoadWeatherChart() {
-  const el = document.getElementById('weather-chart');
-  if (!el) return;
+async function loadWeatherCards() {
+  const container = document.getElementById('weather-cards-container');
+  if (!container) return;
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        loadWeatherData();
-        obs.unobserve(el); // Stop observing
-      }
-    });
-  }, { threshold: 0.1 });
+  // Reset any existing GSAP animations
+  gsap.killTweensOf("#weather-cards-container > div");
+  
+  // Add consistent spacing and sizing to container
+  container.style.gap = '1rem';
+  container.style.padding = '0 1rem';
+  
+  // Add scrollbar styling
+  const scrollContainer = container.parentElement;
+  if (scrollContainer) {
+    scrollContainer.classList.add('custom-scrollbar');
+    scrollContainer.style.scrollbarGutter = 'stable';
+  }
 
-  observer.observe(el);
-}
-
-// Load weather either from cache or API
-async function loadWeatherData() {
   const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
   const now = Date.now();
+  let data;
 
   if (cached && now - cached.timestamp < CACHE_TTL) {
-    renderWeatherChart(cached.data);
-    return;
-  }
-
-  try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=13.4088&longitude=122.5615&timezone=auto&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: now }));
-    renderWeatherChart(data);
-  } catch (err) {
-    console.error('Weather API failed:', err);
-  }
-}
-
-function renderWeatherChart(data) {
-  const ctx = document.getElementById('weather-chart').getContext('2d');
-
-  const dailyDates = data.daily.time.map(d =>
-    new Date(d).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })
-  );
-  const weatherSeverities = data.daily.weather_code.map(c => weatherCodeMap[c]?.severity || 1);
-  const dailyRain = data.daily.rain_sum;
-  const maxTemps = data.daily.temperature_2m_max;
-  const minTemps = data.daily.temperature_2m_min;
-  const windSpeeds = data.daily.windspeed_10m_max;
-
-  if (weatherChart) weatherChart.destroy();
-
-  weatherChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: dailyDates,
-      datasets: [
-        { label: 'Weather Severity', data: weatherSeverities, borderColor: '#FFA500', backgroundColor: 'rgba(255,165,0,0.2)', fill: true, tension: 0.3 },
-        { label: 'Daily Rain (mm)', data: dailyRain, borderColor: '#00BFFF', backgroundColor: 'rgba(0,191,255,0.2)', fill: true, tension: 0.3 },
-        { label: 'Max Temp (°C)', data: maxTemps, borderColor: '#FF4500', fill: false, tension: 0.3 },
-        { label: 'Min Temp (°C)', data: minTemps, borderColor: '#1E90FF', fill: false, tension: 0.3 },
-        { label: 'Max Wind Speed (km/h)', data: windSpeeds, borderColor: '#32CD32', fill: false, tension: 0.3 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: { padding: 0 },
-      plugins: {
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          callbacks: {
-            label: function(context) {
-              const datasetLabel = context.dataset.label;
-              return `${datasetLabel}: ${context.raw.toFixed(1)} ${
-                datasetLabel.includes('Temp') ? '°C' :
-                datasetLabel.includes('Wind') ? 'km/h' : 'mm'
-              }`;
-            }
-          }
-        },
-        legend: { display: true }
-      },
-      scales: {
-        x: { ticks: { autoSkip: false } },
-        y: { beginAtZero: true, title: { display: true, text: 'Severity / Rain / Temp / Wind' } }
-      }
+    data = cached.data;
+  } else {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=13.4088&longitude=122.5615&timezone=auto&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max`;
+      const res = await fetch(url);
+      data = await res.json();
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: now }));
+    } catch (err) {
+      console.error('Weather API failed:', err);
+      return;
     }
+  }
+
+  container.innerHTML = '';
+
+  data.daily.time.forEach((dateStr, idx) => {
+    const code = data.daily.weather_code[idx];
+    const weather = weatherCodeMap[code] || { label: 'Unknown', color: '#ccc', icon: '❓' };
+    const maxTemp = data.daily.temperature_2m_max[idx];
+    const minTemp = data.daily.temperature_2m_min[idx];
+    const rain = data.daily.rain_sum[idx];
+    const wind = data.daily.windspeed_10m_max[idx];
+
+    const card = document.createElement('div');
+    card.className = `
+      bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md flex flex-col items-center text-center
+      w-[140px] min-w-[140px] max-w-[140px]
+      cursor-pointer
+    `;
+    card.style.borderTop = `4px solid ${weather.color}`;
+    card.innerHTML = `
+      <div class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-300 mb-1 truncate">
+        ${new Date(dateStr).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })}
+      </div>
+      <div class="text-3xl sm:text-4xl mb-1">${weather.icon}</div>
+      <div class="text-sm sm:text-base font-medium mb-1 truncate">${weather.label}</div>
+      <div class="text-sm sm:text-base mb-1">🌡️ ${maxTemp.toFixed(0)}° / ${minTemp.toFixed(0)}°C</div>
+      <div class="text-sm sm:text-base mb-1">🌧️ ${rain.toFixed(1)} mm</div>
+      <div class="text-sm sm:text-base">💨 ${wind.toFixed(0)} km/h</div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Set initial state for cards
+  gsap.set("#weather-cards-container > div", {
+    opacity: 0,
+    y: 30,
+    scale: 0.8
+  });
+
+  // GSAP animation
+  gsap.to("#weather-cards-container > div", {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "back.out(1.2)",
+    scrollTrigger: {
+      trigger: "#weather-cards-container",
+      start: "top 80%",
+      toggleActions: "play none none reverse"
+    }
+  });
+
+  // Add hover animation
+  const cards = container.querySelectorAll('div');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      gsap.to(card, {
+        scale: 1.05,
+        duration: 0.2,
+        ease: "power1.out"
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, {
+        scale: 1,
+        duration: 0.2,
+        ease: "power1.out"
+      });
+    });
+  });
+
+  // Draggable horizontal swipe
+  Draggable.create(container, {
+    type: "x",
+    bounds: { minX: -container.scrollWidth + container.parentElement.offsetWidth, maxX: 0 },
+    inertia: true
   });
 }
 
-// Initialize lazy loading
-lazyLoadWeatherChart();
+// Lazy load
+const el = document.getElementById('weather-cards-container');
+if (el) {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        loadWeatherCards();
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(el);
+}

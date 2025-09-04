@@ -6,12 +6,12 @@ import "leaflet/dist/leaflet.css";
 function addBasemap(map) {
   const imagery = L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    { attribution: "Imagery © Esri", maxZoom: 19 }
+    
   ).addTo(map);
 
   const labels = L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
-    { attribution: "Boundaries & Places © Esri", maxZoom: 19 }
+   
   ).addTo(map);
 
   return [imagery, labels];
@@ -33,28 +33,27 @@ else {
       const res = await fetch("https://api.rainviewer.com/public/weather-maps.json");
       const json = await res.json();
 
-      const frames = [...(json?.radar?.past || []), ...(json?.radar?.nowcast || [])];
+      // --- 24-Hour Frames ---
+      const pastFrames = json?.radar?.past || [];
+      const nowcastFrames = json?.radar?.nowcast || [];
+      const maxFrames = 24 * 6; // 6 frames per hour × 24 hours
+      const frames = [...pastFrames, ...nowcastFrames].slice(-maxFrames);
+
       if (!frames.length) throw new Error("No RainViewer frames");
 
-      // --- Prepare tile layers with lazy visibility ---
       const layers = frames.map(f =>
         L.tileLayer(`https://tilecache.rainviewer.com${f.path}/256/{z}/{x}/{y}/2/1_1.png`, {
-          opacity: 0.7,
-          attribution: "Radar © RainViewer",
+          opacity: 0,
+         
           tileSize: 256
         })
       );
 
-      // Preload layers in background without adding them all at once
-      layers.forEach(layer => {
-        const container = document.createElement("div"); // temp container
-        layer.addTo(map);
-        layer.setOpacity(0);
-      });
+      layers.forEach(layer => layer.addTo(map));
 
       let index = layers.length - 1;
       let currentLayer = layers[index];
-      currentLayer.setOpacity(0.7); // show last frame
+      currentLayer.setOpacity(0.7);
 
       let playing = false;
       let speed = 1000;
@@ -75,45 +74,70 @@ else {
         if (timer) clearInterval(timer);
         timer = setInterval(nextFrame, speed);
         playing = true;
-        playBtn.textContent = "⏸ Pause";
+        setPlayIcon(true);
       }
 
       function pause() {
         if (timer) clearInterval(timer);
         playing = false;
-        playBtn.textContent = "▶ Play";
+        setPlayIcon(false);
       }
 
-      // --- Tailwind UI Controls ---
+      // --- Small Tailwind Controls ---
       const control = L.control({ position: "bottomleft" });
       let playBtn, prevBtn, nextBtn, speedInput, timeLabel;
 
+      function setPlayIcon(isPlaying) {
+        playBtn.innerHTML = isPlaying
+          ? `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>`
+          : `<svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-6.518-3.76A1 1 0 007 8.308v7.384a1 1 0 001.234.968l6.518-3.76a1 1 0 000-1.736z" />
+            </svg>`;
+      }
+
       control.onAdd = function () {
         const div = L.DomUtil.create("div");
-        div.className = "bg-slate-900/70 text-white p-3 rounded-lg shadow-lg flex flex-col gap-2";
+        // Smaller width and padding
+        div.className = "bg-slate-900/80 text-white p-2 rounded-lg shadow-lg flex flex-col gap-2 w-40 sm:w-44";
 
-        const row = L.DomUtil.create("div", "flex items-center gap-2", div);
+        const row = L.DomUtil.create("div", "flex items-center justify-between gap-1", div);
 
-        prevBtn = L.DomUtil.create("button", "px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm", row);
-        prevBtn.textContent = "⏮";
+        // Previous button
+        prevBtn = L.DomUtil.create(
+          "button",
+          "w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center shadow-md transition-all duration-200",
+          row
+        );
+        prevBtn.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11 19V5l-9 7 9 7zm2 0h2V5h-2v14z"/></svg>`;
 
-        playBtn = L.DomUtil.create("button", "px-3 py-1 bg-green-600 hover:bg-green-500 rounded text-sm font-semibold", row);
-        playBtn.textContent = "▶ Play";
+        // Play/Pause button
+        playBtn = L.DomUtil.create(
+          "button",
+          "w-10 h-10 bg-green-600 hover:bg-green-500 rounded-full flex items-center justify-center shadow-md transition-all duration-200",
+          row
+        );
+        setPlayIcon(false);
 
-        nextBtn = L.DomUtil.create("button", "px-2 py-1 bg-slate-700 hover:bg-slate-600 rounded text-sm", row);
-        nextBtn.textContent = "⏭";
+        // Next button
+        nextBtn = L.DomUtil.create(
+          "button",
+          "w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center shadow-md transition-all duration-200",
+          row
+        );
+        nextBtn.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M13 5v14l9-7-9-7zm-2 0h-2v14h2V5z"/></svg>`;
 
-        const sliderWrap = L.DomUtil.create("div", "flex flex-col mt-2", div);
+        // Speed slider
+        const sliderWrap = L.DomUtil.create("div", "flex flex-col mt-1", div);
         const sliderLabel = L.DomUtil.create("label", "text-xs text-slate-300 mb-1", sliderWrap);
-        sliderLabel.textContent = "Animation Speed";
+        sliderLabel.textContent = "Speed";
 
-        speedInput = L.DomUtil.create("input", "w-32", sliderWrap);
+        speedInput = L.DomUtil.create("input", "w-full h-2 accent-green-500", sliderWrap);
         speedInput.type = "range";
         speedInput.min = 200;
         speedInput.max = 2000;
         speedInput.value = speed;
 
-        timeLabel = L.DomUtil.create("div", "text-xs text-slate-300 mt-1", div);
+        timeLabel = L.DomUtil.create("div", "text-xs text-slate-300 mt-1 truncate", div);
 
         return div;
       };
@@ -132,7 +156,6 @@ else {
         timeLabel.textContent = `Frame: ${d.toLocaleString("en-PH", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "short" })}`;
       }
 
-      // Show last available frame first
       showFrame(index);
     } catch (e) {
       console.error("RainViewer failed:", e);
@@ -140,4 +163,5 @@ else {
   })();
 
   map.whenReady(() => map.invalidateSize());
+  window.addEventListener("resize", () => map.invalidateSize());
 }
