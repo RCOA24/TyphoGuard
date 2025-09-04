@@ -7,21 +7,31 @@ gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const weatherCodeMap = {
   0: { label: "Clear", color: "#FFD700", icon: "☀️" },
-  1: { label: "Mainly clear", color: "#FFE08A", icon: "🌤️" },
-  2: { label: "Partly cloudy", color: "#C0C0C0", icon: "⛅" },
+  1: { label: "Clear", color: "#FFE08A", icon: "🌤️" },
+  2: { label: "Partly Cloudy", color: "#C0C0C0", icon: "⛅" },
   3: { label: "Overcast", color: "#808080", icon: "☁️" },
-  45: { label: "Fog", color: "#A9A9A9", icon: "🌫️" },
-  48: { label: "Depositing rime fog", color: "#B0B0B0", icon: "🌫️" },
-  51: { label: "Drizzle: Light", color: "#7EC8E3", icon: "🌦️" },
-  53: { label: "Drizzle: Moderate", color: "#5AA6CF", icon: "🌧️" },
-  55: { label: "Drizzle: Dense", color: "#2B82C2", icon: "🌧️" },
-  61: { label: "Rain: Slight", color: "#3399FF", icon: "🌧️" },
-  63: { label: "Rain: Moderate", color: "#007ACC", icon: "🌧️" },
-  65: { label: "Rain: Heavy", color: "#005FA3", icon: "⛈️" },
-  80: { label: "Rain showers: Slight", color: "#66CCFF", icon: "🌦️" },
-  81: { label: "Rain showers: Moderate", color: "#3399FF", icon: "🌧️" },
-  82: { label: "Rain showers: Violent", color: "#0066CC", icon: "⛈️" },
-  95: { label: "Thunderstorm", color: "#e74242ff", icon: "🌩️" }
+  45: { label: "Foggy", color: "#A9A9A9", icon: "🌫️" },
+  48: { label: "Foggy", color: "#B0B0B0", icon: "🌫️" },
+  51: { label: "Light Drizzle", color: "#7EC8E3", icon: "🌦️" },
+  53: { label: "Drizzle", color: "#5AA6CF", icon: "🌧️" },
+  55: { label: "Heavy Drizzle", color: "#2B82C2", icon: "🌧️" },
+  61: { label: "Light Rain", color: "#3399FF", icon: "🌧️" },
+  63: { label: "Rain", color: "#007ACC", icon: "🌧️" },
+  65: { label: "Heavy Rain", color: "#005FA3", icon: "⛈️" },
+  66: { label: "Freezing Rain", color: "#4169E1", icon: "🌧️" },
+  67: { label: "Heavy Freezing", color: "#0000CD", icon: "⛈️" },
+  71: { label: "Light Snow", color: "#E0FFFF", icon: "🌨️" },
+  73: { label: "Snow", color: "#B0E0E6", icon: "🌨️" },
+  75: { label: "Heavy Snow", color: "#87CEEB", icon: "🌨️" },
+  77: { label: "Snow", color: "#B0C4DE", icon: "🌨️" },
+  80: { label: "Light Showers", color: "#66CCFF", icon: "🌦️" },
+  81: { label: "Rain Showers", color: "#3399FF", icon: "🌧️" },
+  82: { label: "Heavy Showers", color: "#0066CC", icon: "⛈️" },
+  85: { label: "Snow Shower", color: "#E0FFFF", icon: "🌨️" },
+  86: { label: "Heavy Snow", color: "#B0E0E6", icon: "🌨️" },
+  95: { label: "Thunderstorm", color: "#e74242ff", icon: "🌩️" },
+  96: { label: "Storm & Hail", color: "#8B0000", icon: "⛈️" },
+  99: { label: "Severe Storm", color: "#800000", icon: "⛈️" }
 };
 
 const CACHE_KEY = 'weatherData';
@@ -35,14 +45,101 @@ async function loadWeatherCards() {
   gsap.killTweensOf("#weather-cards-container > div");
   
   // Add consistent spacing and sizing to container
-  container.style.gap = '1rem';
-  container.style.padding = '0 1rem';
+  container.style.gap = '0.75rem';
+  container.style.padding = '0 0.75rem';
   
-  // Add scrollbar styling
+  // Add scrollbar and touch scrolling styling
   const scrollContainer = container.parentElement;
   if (scrollContainer) {
     scrollContainer.classList.add('custom-scrollbar');
     scrollContainer.style.scrollbarGutter = 'stable';
+    scrollContainer.style.overscrollBehaviorX = 'contain';
+    scrollContainer.style.WebkitOverflowScrolling = 'touch';
+    
+    // Handle wheel events for smooth horizontal scrolling
+    scrollContainer.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        scrollContainer.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Separate mouse and touch handling
+    let isMouseDown = false;
+    let startX;
+    let scrollLeft;
+    let lastMouseX;
+    let mouseVelocity = 0;
+    let mouseAnimationFrame;
+
+    // Mouse handling for desktop
+    if (window.matchMedia('(pointer: fine)').matches) {
+      scrollContainer.style.cursor = 'grab';
+
+      scrollContainer.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
+        scrollContainer.style.cursor = 'grabbing';
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+        lastMouseX = e.pageX;
+        cancelAnimationFrame(mouseAnimationFrame);
+      });
+
+      scrollContainer.addEventListener('mouseleave', () => {
+        isMouseDown = false;
+        scrollContainer.style.cursor = 'grab';
+      });
+
+      scrollContainer.addEventListener('mouseup', () => {
+        isMouseDown = false;
+        scrollContainer.style.cursor = 'grab';
+        
+        if (Math.abs(mouseVelocity) > 1) {
+          const startVelocity = mouseVelocity * 0.8;
+          const animate = () => {
+            if (Math.abs(mouseVelocity) < 0.1) {
+              mouseVelocity = 0;
+              return;
+            }
+            scrollContainer.scrollLeft += mouseVelocity;
+            mouseVelocity *= 0.95;
+            mouseAnimationFrame = requestAnimationFrame(animate);
+          };
+          mouseVelocity = startVelocity;
+          animate();
+        }
+      });
+
+      scrollContainer.addEventListener('mousemove', (e) => {
+        if (!isMouseDown) return;
+        e.preventDefault();
+        
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        scrollContainer.scrollLeft = scrollLeft - walk;
+        
+        mouseVelocity = lastMouseX - e.pageX;
+        lastMouseX = e.pageX;
+      });
+    }
+
+    // Touch handling for mobile devices
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      let touchStartX;
+      let touchScrollLeft;
+      
+      scrollContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].pageX;
+        touchScrollLeft = scrollContainer.scrollLeft;
+        cancelAnimationFrame(mouseAnimationFrame);
+      }, { passive: true });
+
+      scrollContainer.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        const walkX = (touchStartX - touch.pageX);
+        scrollContainer.scrollLeft = touchScrollLeft + walkX;
+      }, { passive: true });
+    }
   }
 
   const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
@@ -67,6 +164,7 @@ async function loadWeatherCards() {
 
   data.daily.time.forEach((dateStr, idx) => {
     const code = data.daily.weather_code[idx];
+    console.log(`Date: ${dateStr}, Weather Code: ${code}`);
     const weather = weatherCodeMap[code] || { label: 'Unknown', color: '#ccc', icon: '❓' };
     const maxTemp = data.daily.temperature_2m_max[idx];
     const minTemp = data.daily.temperature_2m_min[idx];
@@ -77,7 +175,8 @@ async function loadWeatherCards() {
     card.className = `
       bg-white dark:bg-slate-800 p-4 rounded-xl shadow-md flex flex-col items-center text-center
       w-[140px] min-w-[140px] max-w-[140px]
-      cursor-pointer
+      cursor-pointer snap-center
+      active:scale-95 transform
     `;
     card.style.borderTop = `4px solid ${weather.color}`;
     card.innerHTML = `
@@ -85,10 +184,10 @@ async function loadWeatherCards() {
         ${new Date(dateStr).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })}
       </div>
       <div class="text-3xl sm:text-4xl mb-1">${weather.icon}</div>
-      <div class="text-sm sm:text-base font-medium mb-1 truncate">${weather.label}</div>
-      <div class="text-sm sm:text-base mb-1">🌡️ ${maxTemp.toFixed(0)}° / ${minTemp.toFixed(0)}°C</div>
-      <div class="text-sm sm:text-base mb-1">🌧️ ${rain.toFixed(1)} mm</div>
-      <div class="text-sm sm:text-base">💨 ${wind.toFixed(0)} km/h</div>
+      <div class="text-sm sm:text-base font-medium mb-1 truncate max-w-[120px] mx-auto">${weather.label}</div>
+      <div class="text-sm mb-1">🌡️ ${maxTemp.toFixed(0)}° / ${minTemp.toFixed(0)}°C</div>
+      <div class="text-sm mb-1">🌧️ ${rain.toFixed(1)} mm</div>
+      <div class="text-sm">💨 ${wind.toFixed(0)} km/h</div>
     `;
     container.appendChild(card);
   });
@@ -134,12 +233,6 @@ async function loadWeatherCards() {
     });
   });
 
-  // Draggable horizontal swipe
-  Draggable.create(container, {
-    type: "x",
-    bounds: { minX: -container.scrollWidth + container.parentElement.offsetWidth, maxX: 0 },
-    inertia: true
-  });
 }
 
 // Lazy load

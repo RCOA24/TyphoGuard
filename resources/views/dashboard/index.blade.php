@@ -10,8 +10,8 @@
     <div class="card-body">
       <div id="radar-map" class="w-full h-64 mb-4"></div>
       
-    <div class="overflow-x-auto py-4 px-2">
-    <div id="weather-cards-container" class="flex gap-4 pb-2"></div>
+    <div class="overflow-x-auto py-4 px-2 relative touch-pan-x" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+    <div id="weather-cards-container" class="flex gap-4 pb-2 snap-x"></div>
   </div>
 
 
