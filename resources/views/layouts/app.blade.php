@@ -23,8 +23,9 @@
       'resources/js/radar.js',
       'resources/js/weather.js',
       'resources/js/dam.js',
-      
-      
+      'resources/js/about.js',
+      'resources/css/about.css',
+
   ])
 </head>
 
@@ -68,7 +69,7 @@
         <x-nav-link href="{{ url('/dashboard') }}" label="Dashboard" icon="activity"/>
         <x-nav-link href="{{ url('/dams') }}" label="Dams" icon="droplet"/>
         <x-nav-link href="{{ url('/tides') }}" label="Tides" icon="waves"/>
-        <x-nav-link href="{{ url('/alerts') }}" label="Alerts & Guides" icon="bell"/>
+        <x-nav-link href="{{ url('/about') }}" label="Alerts & Guides" icon="bell"/>
       </nav>
 
     </aside>
@@ -83,7 +84,7 @@
     <x-nav-link href="{{ url('/dashboard') }}" label="Dashboard" icon="activity"/>
     <x-nav-link href="{{ url('/dams') }}" label="Dams" icon="droplet"/>
     <x-nav-link href="{{ url('/tides') }}" label="Tides" icon="waves"/>
-    <x-nav-link href="{{ url('/alerts') }}" label="Alerts & Guides" icon="bell"/>
+    <x-nav-link href="{{ url('/about') }}" label="About" icon="bell"/>
   </nav>
 
   <!-- PH Timezone Card -->

@@ -84,34 +84,39 @@ async function getUserLocation() {
 
 async function createLocationButton(container, onLocationUpdate) {
   const buttonContainer = document.createElement('div');
-  buttonContainer.className = 'flex items-center gap-2 mb-4 ml-2';
+  buttonContainer.className = 'fixed-location-header flex items-center gap-2 mb-4 px-3 py-2 bg-white dark:bg-slate-900 border-b dark:border-slate-700 sticky top-0 z-10';
+  buttonContainer.style.width = '100%';
+  buttonContainer.style.left = '0';
+  buttonContainer.style.right = '0';
   
   const locationText = document.createElement('div');
-  locationText.className = 'text-sm text-gray-600 dark:text-gray-400';
+  locationText.className = 'text-sm text-gray-600 dark:text-gray-400 flex-1';
   locationText.textContent = `Weather forecast for ${DEFAULT_COORDS.name}`;
 
   const buttonGroup = document.createElement('div');
-  buttonGroup.className = 'flex gap-2';
+  buttonGroup.className = 'flex gap-2 flex-shrink-0';
 
   // Use my location button
   const button = document.createElement('button');
-  button.className = 'px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center gap-1 transition-colors';
+  button.className = 'px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center gap-1 transition-colors whitespace-nowrap';
   button.innerHTML = `
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
     </svg>
-    Use my location
+    <span class="hidden sm:inline">Use my location</span>
+    <span class="sm:hidden">Location</span>
   `;
 
   // Refresh button
   const refreshButton = document.createElement('button');
-  refreshButton.className = 'px-3 py-1 text-sm bg-slate-500 hover:bg-slate-600 text-white rounded-full flex items-center gap-1 transition-colors';
+  refreshButton.className = 'px-3 py-1 text-sm bg-slate-500 hover:bg-slate-600 text-white rounded-full flex items-center gap-1 transition-colors whitespace-nowrap';
   refreshButton.innerHTML = `
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
     </svg>
-    Reset to Manila
+    <span class="hidden sm:inline">Reset to Manila</span>
+    <span class="sm:hidden">Reset</span>
   `;
 
   let isUpdating = false;
@@ -123,11 +128,12 @@ async function createLocationButton(container, onLocationUpdate) {
       isUpdating = true;
       button.classList.add('opacity-50');
       button.innerHTML = `
-        <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 animate-spin flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        Updating...
+        <span class="hidden sm:inline">Updating...</span>
+        <span class="sm:hidden">...</span>
       `;
       
       const location = await getUserLocation();
@@ -135,36 +141,40 @@ async function createLocationButton(container, onLocationUpdate) {
       await onLocationUpdate(location, true); // force refresh
       
       button.innerHTML = `
-        <svg class="w-4 h-4 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 text-green-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>
-        Location updated
+        <span class="hidden sm:inline">Location updated</span>
+        <span class="sm:hidden">Updated</span>
       `;
       
       setTimeout(() => {
         button.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
-          Use my location
+          <span class="hidden sm:inline">Use my location</span>
+          <span class="sm:hidden">Location</span>
         `;
       }, 2000);
 
     } catch (error) {
       button.innerHTML = `
-        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        Location access denied
+        <span class="hidden sm:inline">Location access denied</span>
+        <span class="sm:hidden">Denied</span>
       `;
       setTimeout(() => {
         button.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
-          Use my location
+          <span class="hidden sm:inline">Use my location</span>
+          <span class="sm:hidden">Location</span>
         `;
       }, 3000);
     } finally {
@@ -182,7 +192,10 @@ async function createLocationButton(container, onLocationUpdate) {
   buttonGroup.appendChild(refreshButton);
   buttonContainer.appendChild(locationText);
   buttonContainer.appendChild(buttonGroup);
-  container.parentElement.insertBefore(buttonContainer, container);
+  
+  // Find the container's parent and insert the header before the scrollable area
+  const scrollableParent = container.closest('.overflow-x-auto') || container.parentElement;
+  scrollableParent.parentElement.insertBefore(buttonContainer, scrollableParent);
 
   return { locationText, button, refreshButton };
 }

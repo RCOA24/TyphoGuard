@@ -1,0 +1,182 @@
+/* About Page Styles */
+
+.hero-gradient {
+    background: linear-gradient(135deg, 
+        rgba(14, 165, 233, 0.05) 0%, 
+        rgba(99, 102, 241, 0.05) 25%,
+        rgba(168, 85, 247, 0.05) 50%,
+        rgba(236, 72, 153, 0.05) 75%,
+        rgba(239, 68, 68, 0.05) 100%);
+}
+
+.feature-icon {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(2) {
+    animation-delay: -2s;
+}
+
+.floating-element:nth-child(3) {
+    animation-delay: -4s;
+}
+
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+    }
+    33% { 
+        transform: translateY(-15px) rotate(1deg); 
+    }
+    66% { 
+        transform: translateY(-5px) rotate(-1deg); 
+    }
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 🌪 Typhoon Animation with Hover Effect */
+.typhoon-animation {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: transform 0.6s ease;
+}
+
+.hero-gradient:hover .typhoon-animation {
+    transform: scale(1.15);
+    opacity: 0.4;
+}
+
+.typhoon-eye {
+    width: 80px;
+    height: 80px;
+    border: 3px solid rgba(59, 130, 246, 0.4);
+    border-radius: 50%;
+    animation: spinEye 10s linear infinite;
+    transition: transform 0.6s ease;
+}
+
+.typhoon-spiral {
+    width: 160px;
+    height: 160px;
+    border: 2px dashed rgba(139, 92, 246, 0.3);
+    border-radius: 50%;
+    animation: spinSpiral 15s linear infinite;
+    transition: transform 0.6s ease;
+}
+
+@keyframes spinEye {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes spinSpiral {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+}
+
+/* Water drops */
+.water-drop {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(59, 130, 246, 0.7);
+    border-radius: 50%;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    0%   { transform: translateY(-50px); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(400px); opacity: 0; }
+}
+
+/* Animation states for JavaScript */
+.hero-content,
+.mission-content,
+.stats-container,
+.features-title,
+.feature-card,
+.dam-visual,
+.local-visual,
+.vision-content,
+.emergency-guides,
+.cta-content {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* 🌪 TyphoGuard Custom Cards (cloned from DaisyUI card styles) */
+.cardtyphoon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem; /* rounded-2xl */
+  background-color: rgba(27, 29, 32, 0.644); /* default background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05),
+              0 10px 15px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 18px 10px;
+}
+
+.dark .cardtyphoon {
+  background-color: rgb(30 41 59); /* slate-800 for dark mode */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3),
+              0 10px 15px rgba(0, 0, 0, 0.4);
+}
+
+.cardtyphoon:hover {
+  transform: scale(1.02);
+}
+
+/* Card Head */
+.cardtyphoon-head {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgb(137, 145, 155); /* slate-200 */
+  font-weight: 600;
+  font-size: 1.125rem; /* text-lg */
+}
+
+.dark .cardtyphoon-head {
+  border-color: rgb(71 85 105); /* slate-600 */
+}
+
+/* Card Body */
+.cardtyphoon-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* space-y-3 */
+  padding: 1.5rem;
+}
+
+/* Card Footer */
+.cardtyphoon-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgb(226 232 240);
+  font-size: 0.875rem; /* text-sm */
+  color: rgb(100 116 139); /* slate-500 */
+}
+
+.dark .cardtyphoon-footer {
+  border-color: rgb(71 85 105);
+  color: rgb(148 163 184); /* slate-400 */
+}
+
