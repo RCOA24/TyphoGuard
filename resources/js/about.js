@@ -1,3 +1,5 @@
+import '../css/about.css';
+
 // About Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     // Intersection Observer options

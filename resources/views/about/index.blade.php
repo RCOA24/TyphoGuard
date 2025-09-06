@@ -122,7 +122,7 @@
         <div class="cardtyphoon rounded-2xl">
           <div class="cardtyphoon-body">
             <h4 class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">Dam Water Levels</h4>
-            <div class="flex items-end justify-center space-x-6 h-48">
+            <div class="flex items-end justify-center space-x-6 h-38">
               <div class="flex flex-col items-center">
                 <div class="w-12 h-24 bg-slate-200 dark:bg-slate-700 rounded-t-lg relative overflow-hidden">
                   <div class="dam-water absolute bottom-0 w-full bg-gradient-to-t from-green-500 to-green-400 transition-all duration-2000" style="height: 60%;"></div>

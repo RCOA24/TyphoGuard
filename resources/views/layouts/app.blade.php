@@ -12,21 +12,16 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-  @vite([
-      'resources/css/app.css',
-      'resources/js/app.js',
-      'resources/js/ph-time.js',
-      'resources/js/manila-bay-map.js',
-      'resources/js/tide.js',
-      'resources/js/weather.js',
-      'resources/css/radar.css',
-      'resources/js/radar.js',
-      'resources/js/weather.js',
-      'resources/js/dam.js',
-      'resources/js/about.js',
-      'resources/css/about.css',
+@vite([
+    'resources/css/app.css',
+    'resources/js/app.js',
+    'resources/js/ph-time.js',
+    'resources/js/tide.js',
+    'resources/js/weather.js',
+    'resources/js/radar.js',
+    'resources/js/about.js',
+])
 
-  ])
 </head>
 
 <body class="h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 overflow-auto">
