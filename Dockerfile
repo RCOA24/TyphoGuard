@@ -22,17 +22,21 @@ WORKDIR /app
 # Copy project files
 COPY . /app
 
-# Install Composer and PHP dependencies
+# Install Composer dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
 
+# Install Vite globally so "npm run build" works
+RUN npm install -g vite
 
-# Set NODE_ENV for production
-ENV NODE_ENV=production
+# Install Node dependencies (including dev dependencies)
+RUN npm install --legacy-peer-deps
 
-# Install Node dependencies & build assets
-RUN npm install
+# Build Vite assets (Tailwind CSS + JS)
 RUN npm run build
+
+# Optionally remove dev dependencies to save space
+RUN npm prune --production
 
 # Set storage and public/build permissions
 RUN chmod -R 775 storage bootstrap/cache public/build
