@@ -1,4 +1,4 @@
-# Use PHP 8.2 with Composer
+# Use PHP 8.2 CLI with Composer
 FROM php:8.2-cli
 
 # Install system dependencies
@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     nodejs \
     npm \
+    bash \
     && apt-get clean
 
 # Enable PHP extensions
@@ -21,21 +22,24 @@ WORKDIR /app
 # Copy project files
 COPY . /app
 
-# Install PHP dependencies
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node dependencies and build assets
+# Install Node dependencies & build assets
 RUN npm install
 RUN npm run build
 
-# Cache Laravel config, routes, views
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
+# Set storage permissions
+RUN chmod -R 775 storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Copy start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Expose port
 EXPOSE 8080
 
-# Start Laravel
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8080"]
+# Start Laravel with caching and permissions
+CMD ["/start.sh"]
