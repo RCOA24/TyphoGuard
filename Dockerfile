@@ -26,6 +26,10 @@ COPY . /app
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
 
+
+# Set NODE_ENV for production
+ENV NODE_ENV=production
+
 # Install Node dependencies & build assets
 RUN npm install
 RUN npm run build
