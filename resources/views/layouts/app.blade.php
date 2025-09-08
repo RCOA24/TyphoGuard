@@ -44,11 +44,7 @@
         <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-400/10 dark:text-sky-400"> Beta </span>
       </div>
 
-      <div class="flex items-center gap-3">
-        <button @click="dark=!dark" class="text-sm px-3 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <span x-show="!dark">Dark</span><span x-show="dark">Light</span> Mode
-        </button>
-      </div>
+      
     </div>
   </header>
 

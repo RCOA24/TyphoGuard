@@ -147,37 +147,30 @@
       </div>
     </div>
     
-    <!-- Feature 2: Local Relevance -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      <div class="local-visual opacity-0 order-2 lg:order-1">
-        <div class="cardtyphoon rounded-2xl">
-          <div class="cardtyphoon-body">
-            <div class="mb-4">
-              <div class="flex items-center space-x-2 mb-2">
-                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span class="text-sm font-medium">Region IV-A (CALABARZON)</span>
-              </div>
-              <div class="text-xl font-bold">Metro Manila</div>
-              <div class="text-sm text-slate-500 dark:text-slate-400">Emergency Protocols Active</div>
-            </div>
-            
-            <div class="space-y-2">
-              <div class="flex items-center space-x-3 p-2 bg-slate-100 dark:bg-slate-800/50 rounded-lg">
-                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span class="text-sm">Evacuation Centers: 15 active</span>
-              </div>
-              <div class="flex items-center space-x-3 p-2 bg-slate-100 dark:bg-slate-800/50 rounded-lg">
-                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span class="text-sm">Emergency Hotline: 117</span>
-              </div>
-              <div class="flex items-center space-x-3 p-2 bg-slate-100 dark:bg-slate-800/50 rounded-lg">
-                <div class="w-2 h-2 bg-pink-500 rounded-full"></div>
-                <span class="text-sm">Safe Routes: Updated 2m ago</span>
-              </div>
-            </div>
-          </div>
+
+    <!-- Feature 2: Tide Monitoring -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+  <!-- Tide Feature Description -->
+  <div class="feature-card opacity-0 order-1 lg:order-2">
+    <div class="cardtyphoon rounded-2xl">
+      <div class="cardtyphoon-body">
+        <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-gradient-to-r from-blue-500 to-sky-400">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M3 15c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0 3.5-1.5 5 0 3.5 1.5 5 0M3 9c1.5-1.5 3.5-1.5 5 0s3.5 1.5 5 0 3.5-1.5 5 0 3.5 1.5 5 0"/>
+        </svg>
         </div>
+        <h3 class="text-xl font-bold mb-3">Tide Monitoring</h3>
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+          TyphoGuard provides real-time tide information with <strong>123 tide stations</strong> across <strong>23 regions of the Philippines</strong>.  
+          Users can check the <strong>next high tide, next low tide, and tidal ranges</strong>, or use their current location to get personalized updates.  
+          More improvements are continuously being added to expand coverage and accuracy.
+        </p>
       </div>
+    </div>
+  </div>
+
+
       
      
       <div class="feature-card opacity-0 order-1 lg:order-2">
@@ -189,10 +182,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-3">Hyper-Local Intelligence</h3>
+            <h3 class="text-xl font-bold mb-3">Localized Weather Insights</h3>
             <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
-              Generic weather apps don't understand Manila's unique flooding patterns or know Cebu's evacuation routes. TyphoGuard is built for Filipino communities, with region-specific protocols, shelter networks, and cultural context.
-            </p>
+              Unlike generic apps, TyphoGuard focuses on what matters to Filipinos—real-time radar, detailed forecasts, and location-specific updates. Whether you're in Manila or checking conditions near you, TyphoGuard delivers accurate, timely weather data tailored for the Philippines.
           </div>
         </div>
       </div>

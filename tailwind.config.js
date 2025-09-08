@@ -3,6 +3,7 @@ import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
 
 export default {
+  darkMode: 'class',   // This is crucial!
   content: [
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
