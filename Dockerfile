@@ -1,38 +1,35 @@
-# Stage 1: Build frontend
+# Stage 1: Build Frontend (Vite + Tailwind)
 FROM node:18 AS frontend
 WORKDIR /app
+
+# Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
-COPY resources/ resources/
-COPY vite.config.js .
-COPY tailwind.config.js .
+RUN npm install
 
+# Copy rest of the app
+COPY . ./
 
+# Build assets for production
 RUN npm run build
 
-# Stage 2: Laravel backend
+# Stage 2: Laravel + PHP Backend
 FROM php:8.2-fpm
 WORKDIR /var/www/html
-RUN apt-get update && apt-get install -y git unzip curl libzip-dev zip bash && apt-get clean
-RUN docker-php-ext-install pdo pdo_mysql zip
 
-# Copy Laravel app
-COPY . /var/www/html
+# Install PHP dependencies for Laravel
+RUN apt-get update && apt-get install -y \
+    libzip-dev unzip git \
+    && docker-php-ext-install pdo pdo_mysql zip
 
-# Copy built assets
-COPY --from=frontend /app/public/build /var/www/html/public/build
+# Copy Laravel app and frontend build from previous stage
+COPY --from=frontend /app /var/www/html
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache public/build \
-    && chmod -R 775 storage bootstrap/cache public/build
+# Ensure storage & bootstrap/cache are writable
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Start script
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-EXPOSE 8080
-CMD ["/start.sh"]
+EXPOSE 9000
+CMD ["php-fpm"]
