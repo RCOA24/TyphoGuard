@@ -1,4 +1,4 @@
-# Stage 1: Build frontend assets
+# Stage 1: Build frontend assets (Tailwind + Vite)
 FROM node:18 AS frontend
 WORKDIR /app
 
@@ -6,8 +6,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
-# Copy resources and build
-COPY . .
+# Copy resources and other files needed for build
+COPY resources/ resources/
+COPY vite.config.js .
+COPY tailwind.config.js .
+COPY postcss.config.js .
 RUN npm run build   # outputs to public/build
 
 # Stage 2: Laravel backend
@@ -22,15 +25,17 @@ RUN apt-get update && apt-get install -y \
 # Enable PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql zip
 
-# Copy Laravel files
-COPY composer.json composer.lock ./
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
+# Copy full Laravel app first
+COPY . /var/www/html
 
-COPY . .
-
-# Copy built frontend assets
+# Copy built frontend assets from previous stage
 COPY --from=frontend /app/public/build /var/www/html/public/build
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache public/build \
