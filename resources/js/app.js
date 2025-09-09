@@ -8,5 +8,6 @@ import './weather.js';
 import './radar.js';
 import './about.js';
 
+
 window.Alpine = Alpine;
 Alpine.start();

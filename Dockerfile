@@ -6,7 +6,6 @@ RUN npm install --legacy-peer-deps
 COPY resources/ resources/
 COPY vite.config.js .
 COPY tailwind.config.js .
-COPY postcss.config.js .
 RUN npm run build
 
 # Stage 2: Laravel backend
@@ -26,7 +25,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache public/build && chmod -R 775 storage bootstrap/cache public/build
+RUN chown -R www-data:www-data storage bootstrap/cache public/build \
+    && chmod -R 775 storage bootstrap/cache public/build
 
 # Start script
 COPY start.sh /start.sh
