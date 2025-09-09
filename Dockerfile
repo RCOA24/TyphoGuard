@@ -6,7 +6,7 @@ RUN npm install --legacy-peer-deps
 COPY resources/ resources/
 COPY vite.config.js .
 COPY tailwind.config.js .
-COPY postcss.config.cjs .
+
 
 RUN npm run build
 
