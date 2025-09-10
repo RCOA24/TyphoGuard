@@ -8,7 +8,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Laravel + PHP Backend
+# Stage 2: Laravel + PHP
 FROM php:8.2
 
 # Install PHP extensions needed for Laravel
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
-# Copy Laravel app and frontend build
+# Copy app and frontend build
 COPY --from=frontend /app /var/www/html
 
 # Install Composer
@@ -28,8 +28,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Ensure writable dirs
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port (Render will assign one, but we default to 8080 locally)
+# Expose a default port
 EXPOSE 8080
 
-# Start Laravel's built-in server, binding to Render's $PORT or fallback 8080
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Start Laravel on Render's assigned $PORT
+CMD php artisan key:generate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
