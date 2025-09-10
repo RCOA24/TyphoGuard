@@ -64,6 +64,7 @@
                   </svg>
                   Region
                 </label>
+                
 
                   <div class="relative mt-1">
             <!-- Region/Map Icon -->
@@ -87,7 +88,12 @@
               <template x-for="(region, rIndex) in stations" :key="rIndex">
                 <option :value="rIndex" x-text="region.region"></option>
               </template>
+              
             </select>
+            <p class="text-xs text-slate-500 mt-2">
+              Data from Tide Checker - Philippines Tidal Locations · Covering 113 tide stations across 23 regions, with the dataset continually expanding for broader updates — 
+              <a href="https://tidechecker.com/philippines/" target="_blank" class="text-blue-500 hover:underline">Tide-Checker</a>
+            </p>
           </div>
         </div>
       <div>

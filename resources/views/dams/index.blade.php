@@ -16,11 +16,14 @@
             </span>
         </div>
         <p class="text-sm text-slate-500 mt-4">
-            Real-time data from 
-            <a href="https://www.pagasa.dost.gov.ph/flood#dam-information" target="_blank" class="text-blue-500 hover:text-blue-600 transition-colors">
-                PAGASA
-            </a>
-        </p>
+                Data from 
+                <a href="https://www.pagasa.dost.gov.ph/flood#dam-information" target="_blank" 
+                    class="text-blue-500 hover:text-blue-600 transition-colors">
+                    PAGASA
+                </a> 
+                — <span class="font-medium text-slate-600 dark:text-slate-300">Real-time when available</span>, 
+                otherwise updated daily at <span class="font-medium">8:00 AM</span>.
+            </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">

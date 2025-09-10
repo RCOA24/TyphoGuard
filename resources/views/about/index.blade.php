@@ -34,7 +34,7 @@
 
   <!-- Hero Content -->
   <div class="relative z-10 p-8 text-center max-w-3xl">
-    <div class="opacity-0 hero-content">
+    <div class="hero-content">
       <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
         <span class="text-gradient">TyphoGuard</span>
       </h1>
@@ -59,13 +59,120 @@
   </div>
 </div>
 
+  <!-- Personal Story Section -->
+  <div class="cardtyphoon rounded-2xl personal-story">
+    <div class="cardtyphoon-body">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <!-- Profile Image -->
+        <div class="lg:col-span-1 flex justify-center">
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+            <div class="relative w-48 h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-xl">
+              <!-- Replace this src with your actual photo path -->
+              <img src="{{ asset('images/profile.jpg') }}" 
+                   alt="Charles Austria - TyphoGuard Developer" 
+                   class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                   onerror="console.log('Image failed to load:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   onload="console.log('Image loaded successfully:', this.src);">
+              <!-- Fallback avatar if image doesn't load -->
+              <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-6xl font-bold" style="display: none;">
+                CA
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Personal Story Content -->
+        <div class="lg:col-span-2 space-y-6">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2">
+              Beyond Code: <span class="text-gradient">A Personal Mission</span>
+            </h2>
+            <p class="text-lg text-slate-500 dark:text-slate-400 font-medium">
+              Rodney Charles O. Austria - Developer & Filipino Citizen
+            </p>
+          </div>
+          
+          <div class="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p class="text-lg">
+              Growing up in the Philippines means living with the reality of typhoons. I've experienced the anxiety of watching weather updates, the frustration of conflicting information, and the helplessness when communities lack early warning systems.
+            </p>
+            
+            <p>
+              As a developer, I realized I had the skills to bridge this gap. TyphoGuard isn't just another portfolio project—it's my response to a problem that affects millions of Filipinos every year. Every feature, from dam level monitoring to localized emergency guides, comes from real experiences and genuine concern for community safety.
+            </p>
+            
+            <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-6 border-l-4 border-blue-500">
+              <p class="text-slate-700 dark:text-slate-200 italic">
+                "Technology should serve our most pressing needs. When I see families evacuating due to sudden dam releases or communities caught off-guard by flash floods, I'm reminded why projects like TyphoGuard matter. It's not about showing off technical skills—it's about using those skills for something meaningful."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Mission Statement -->
   <div class="cardtyphoon rounded-2xl">
-    <div class="cardtyphoon-body text-center mission-content opacity-0">
+    <div class="cardtyphoon-body text-center mission-content">
       <h2 class="text-3xl md:text-4xl font-bold mb-4">Technology That <span class="text-gradient">Saves Lives</span></h2>
       <p class="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
         In a country where typhoons and flooding threaten millions, we don't just build apps—we build hope. TyphoGuard transforms complex environmental data into actionable intelligence that communities can trust.
       </p>
+    </div>
+  </div>
+
+  <!-- Developer Journey Section -->
+  <div class="cardtyphoon rounded-2xl developer-journey">
+    <div class="cardtyphoon-head">
+      <h3 class="text-2xl font-bold">From Problem to Solution</h3>
+    </div>
+    <div class="cardtyphoon-body">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center space-y-3">
+          <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg">The Problem</h4>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Scattered weather information, delayed dam release warnings, and generic apps that don't understand Filipino community needs.
+          </p>
+        </div>
+        
+        <div class="text-center space-y-3">
+          <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg">The Insight</h4>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Filipinos need hyper-local, actionable weather intelligence—especially around dam operations and community-specific risks.
+          </p>
+        </div>
+        
+        <div class="text-center space-y-3">
+          <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h4 class="font-bold text-lg">The Solution</h4>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            A comprehensive platform combining real-time data, predictive intelligence, and community-first design principles.
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 rounded-xl">
+        <h4 class="font-bold text-lg mb-3 text-center">Community-Driven Development</h4>
+        <p class="text-slate-600 dark:text-slate-300 text-center">
+          Every feature in TyphoGuard addresses real Filipino experiences with weather emergencies. This isn't theoretical—it's practical technology born from genuine community need and developer passion for social impact.
+        </p>
+      </div>
     </div>
   </div>
 
@@ -170,9 +277,6 @@
     </div>
   </div>
 
-
-      
-     
       <div class="feature-card opacity-0 order-1 lg:order-2">
         <div class="cardtyphoon rounded-2xl">
           <div class="cardtyphoon-body">
@@ -256,14 +360,27 @@
       <p class="text-lg text-slate-600 dark:text-slate-300 mb-6">
         Ready to create technology that matters? Let's discuss how data-driven solutions can serve communities and drive positive impact.
       </p>
+      
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://www.facebook.com/charles.austria.56" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition">
-          Get Started
-        </a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rodneycharlesaustria1124@gmail.com" class="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-          Email me
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rodneycharlesaustria1124@gmail.com" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="relative inline-flex items-center justify-center px-8 py-3.5 
+                  bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold 
+                  rounded-xl shadow-lg overflow-hidden group">
+          
+          <!-- Shimmer Effect -->
+          <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent 
+                      translate-x-[-100%] animate-shimmer opacity-0"></span>
+          
+          <!-- Button Content -->
+          <span class="relative flex items-center gap-2">
+            Get Started
+            
+          </span>
         </a>
       </div>
+  
     </div>
   </div>
 </div>

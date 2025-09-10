@@ -3,7 +3,7 @@ function updatePHTime() {
 
     const options = {
         timeZone: 'Asia/Manila',
-        hour12: false,
+        hour12: true,
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',

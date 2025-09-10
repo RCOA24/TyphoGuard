@@ -6,8 +6,16 @@
   
   <!-- Weather & Radar (Main Focus) -->
   <div class="col-span-12 lg:col-span-8 card">
+    
     <div class="card-head">Detailed Weather & Live Radar — Philippines</div>
+    
     <div class="card-body">
+       <p class="text-xs text-slate-500 mt-2">
+          Data from Rain Viewer and Satellite Map from ArcGIS —
+          <a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" class="text-blue-500 hover:underline">Rain Viewer</a> · 
+          <a href="https://www.arcgis.com/home/webmap/viewer.html" target="_blank" class="text-blue-500 hover:underline">ArcGIS</a>
+        </p>
+
       <div id="radar-map" class="w-full h-64 mb-4"></div>
       
     <div class="overflow-x-auto py-4 px-2 relative touch-pan-x" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">

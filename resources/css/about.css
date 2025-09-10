@@ -108,9 +108,113 @@
     100% { transform: translateY(400px); opacity: 0; }
 }
 
+/* Personal Story Section Styles */
+.personal-story {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.02) 0%, 
+        rgba(139, 92, 246, 0.02) 50%,
+        rgba(236, 72, 153, 0.02) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.dark .personal-story {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.05) 0%, 
+        rgba(139, 92, 246, 0.05) 50%,
+        rgba(236, 72, 153, 0.05) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Developer Journey Section */
+.developer-journey {
+    position: relative;
+    overflow: hidden;
+}
+
+.developer-journey::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Profile image hover effects */
+.personal-story img {
+    transition: all 0.3s ease;
+}
+
+.personal-story .group:hover img {
+    transform: scale(1.05);
+    filter: brightness(1.1) contrast(1.1);
+}
+
+/* Badges for dam levels */
+.badge-ok {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.badge-warn {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+    animation: pulse-danger 2s infinite;
+}
+
+@keyframes pulse-danger {
+    0%, 100% { 
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2); 
+    }
+    50% { 
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4), 
+                    0 0 16px rgba(239, 68, 68, 0.2); 
+    }
+}
+
+/* Pulse glow animation for critical dam level */
+@keyframes pulse-glow {
+    0%, 100% { 
+        box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.3); 
+    }
+    50% { 
+        box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.6), 
+                    inset 0 0 30px rgba(239, 68, 68, 0.3); 
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
 /* Animation states for JavaScript */
 .hero-content,
+.personal-story,
 .mission-content,
+.developer-journey,
 .stats-container,
 .features-title,
 .feature-card,
@@ -121,6 +225,49 @@
 .cta-content {
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
+
+/* Staggered animation classes for JavaScript */
+.fade-in-up {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.fade-in-left {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+.fade-in-right {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+
+
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+
+
 
 /* 🌪 TyphoGuard Custom Cards (cloned from DaisyUI card styles) */
 .cardtyphoon {
@@ -179,4 +326,3 @@
   border-color: rgb(71 85 105);
   color: rgb(148 163 184); /* slate-400 */
 }
-

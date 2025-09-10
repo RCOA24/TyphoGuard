@@ -47,23 +47,48 @@
       
     </div>
   </header>
+<!-- Sidebar Mobile - start of the code -->
+      <div 
+          x-cloak 
+          x-show="sidebar" 
+          x-transition.opacity.duration.300ms
+          @keydown.escape.window="sidebar=false" 
+          class="fixed inset-0 z-50 sm:hidden"
+      >
+          <!-- Background Overlay -->
+          <div 
+              @click="sidebar=false" 
+              class="absolute inset-0 bg-black/40"
+              x-transition.opacity.duration.300ms
+          ></div>
 
-  <!-- Sidebar Mobile Drawer -->
-  <div x-cloak x-show="sidebar" @keydown.escape.window="sidebar=false" class="fixed inset-0 z-50 sm:hidden">
-    <div @click="sidebar=false" class="absolute inset-0 bg-black/40"></div>
-    <aside class="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900 p-4">
-      <div class="flex items-center justify-between mb-4">
-        <span class="font-semibold">Menu</span>
-        <button @click="sidebar=false" class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">✕</button>
+          <!-- Sidebar Mobile -->
+          <aside 
+              class="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900 p-4 transform transition-transform"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="-translate-x-full"
+              x-transition:enter-end="translate-x-0"
+              x-transition:leave="transition ease-in duration-300"
+              x-transition:leave-start="translate-x-0"
+              x-transition:leave-end="-translate-x-full"
+          >
+              <div class="flex items-center justify-between mb-4">
+                  <span class="font-semibold">Menu</span>
+                  <button 
+                      @click="sidebar=false" 
+                      class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
+                  >✕</button>
+              </div>
+
+              <nav class="space-y-1">
+                  <x-nav-link href="{{ url('/dashboard') }}" label="Dashboard" icon="activity"/>
+                  <x-nav-link href="{{ url('/dams') }}" label="Dams" icon="droplet"/>
+                  <x-nav-link href="{{ url('/tides') }}" label="Tides" icon="waves"/>
+                  <x-nav-link href="{{ url('/about') }}" label="About the Developer" icon="bell"/>
+              </nav>
+          </aside>
       </div>
-      <nav class="space-y-1">
-        <x-nav-link href="{{ url('/dashboard') }}" label="Dashboard" icon="activity"/>
-        <x-nav-link href="{{ url('/dams') }}" label="Dams" icon="droplet"/>
-        <x-nav-link href="{{ url('/tides') }}" label="Tides" icon="waves"/>
-        <x-nav-link href="{{ url('/about') }}" label="Alerts & Guides" icon="bell"/>
-      </nav>
 
-    </aside>
   </div>
   
 
@@ -75,7 +100,7 @@
     <x-nav-link href="{{ url('/dashboard') }}" label="Dashboard" icon="activity"/>
     <x-nav-link href="{{ url('/dams') }}" label="Dams" icon="droplet"/>
     <x-nav-link href="{{ url('/tides') }}" label="Tides" icon="waves"/>
-    <x-nav-link href="{{ url('/about') }}" label="About" icon="bell"/>
+    <x-nav-link href="{{ url('/about') }}" label="About the Developer" icon="bell"/>
   </nav>
 
   <!-- PH Timezone Card -->
