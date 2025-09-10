@@ -1,35 +1,67 @@
 # TyphoGuard 🌊🌦️  
-Real-time tide, dam, and weather monitoring platform for the Philippines.  
-Built with **Laravel**, **Tailwind CSS**, and public environmental APIs.
+
+**Real-time weather, tide, and dam monitoring platform for the Philippines.**  
+Built with **Laravel 11**, **Tailwind CSS**, and powered by public environmental APIs including PAG-ASA, Tomorrow.io, and WeatherAPI.  
+
+🔗 **Live Demo:** [TyphoGuard on Render](https://typhoguard.onrender.com)
+
+---
 
 ## 🧭 Project Overview  
-In a country like the Philippines, where typhoons and flooding are a recurring threat, technology has the potential to save lives—not just streamline workflows. That belief inspired the creation of **TyphoGuard**, a developer-built platform designed to help communities monitor and prepare for extreme weather events.
 
-This project isn’t just a showcase of technical skills—it’s a demonstration of how thoughtful design and responsive systems can serve the public good. TyphoGuard stands out through its multi-layered approach to environmental intelligence. Unlike traditional weather apps that simply display forecasts, it integrates real-time data feeds to help users monitor tide levels, dam water capacity, and typhoon trajectories—all within a clean, accessible interface.
+In the Philippines, typhoons, flooding, and extreme weather are recurring threats. **TyphoGuard** is a developer-built platform designed to provide **real-time environmental intelligence** to help communities monitor, prepare for, and respond to these events.  
 
-One of the standout features is **dam control awareness**, a rarely addressed but critical component of flood prevention. By visualizing dam levels and potential overflow risks, TyphoGuard empowers both local authorities and citizens to make informed decisions before disaster strikes. This infrastructure intelligence sets the platform apart from generic weather dashboards.
+Unlike generic weather apps, TyphoGuard integrates multiple layers of data:
+- **Detailed weather & live radar** (up to 3 hours ahead)
+- **Weather forecasts** powered by PAG-ASA, Tomorrow.io, and WeatherAPI (up to 1 week)
+- **Location-based weather** using "Use my location" for real-time local forecasts
+- **Dam water level monitoring** including safe, warning, and critical levels
+- **Tide monitoring** across 123 stations and 23 regions in the Philippines  
 
-The project also emphasizes **local relevance**. Emergency protocols are tailored to Philippine regions, with evacuation guides, shelter maps, and contact information designed for real-world usability. This cultural and geographic specificity transforms TyphoGuard from a generic tool into a community-first solution.
+This platform emphasizes **public safety, actionable insights, and local relevance**, providing users and authorities with the tools to make informed decisions before disasters strike.
 
-TyphoGuard is more than a portfolio piece. It’s a statement of intent: to build technology that’s not only innovative but also impactful. By combining real-time data, responsive design, and user-centered thinking, this project represents a step toward climate resilience, public safety, and tech for good—values I aim to carry forward in every role I pursue.
+---
 
 ## 🚀 Features  
-- 📊 **Live tide levels** from free Philippine tide APIs  
-- 💧 **Dam water capacity monitoring**  
-- 🌀 **Typhoon tracking & alerts**  
-- 📱 Responsive UI (mobile, tablet, desktop)  
-- 📍 Location-specific evacuation info (future plan)
+
+### Weather & Radar
+- Live radar updates for the Philippines  
+- 3-hour detailed weather forecast  
+- 7-day weather forecast for Manila and user’s location  
+- Real-time location tracking for personalized weather updates  
+
+### Dam Monitoring
+- Real-time dam water levels from PAG-ASA  
+- Safe, warning, and critical level indicators  
+- Current water level comparison against safe level  
+- Water level trends, dam operations, gate operations, and inflow/outflow data  
+
+### Tide Monitoring
+- Data from 123 tide stations across 23 regions  
+- Region & location selection with latitude and longitude info  
+- Next high tide, next low tide, and tidal range  
+- Real-time location-based tide information  
+
+### General
+- Fully responsive UI (desktop, tablet, mobile)  
+- Location-specific evacuation guides (planned feature)  
+- Intuitive, community-focused design  
+
+---
 
 ## 🛠 Tech Stack  
 - **Backend:** Laravel 11  
 - **Frontend:** Tailwind CSS + Alpine.js  
-- **Data Sources:** PH environmental APIs  
-- **Version Control:** Git + GitHub
+- **Data Sources:** PAG-ASA, Tomorrow.io API, WeatherAPI  
+- **Version Control:** Git + GitHub  
+
+---
 
 ## 📦 Installation  
+
 ```bash
 git clone https://github.com/RCOA24/TyphoGuard.git
-cd typhoguard
+cd TyphoGuard
 composer install
 cp .env.example .env
 php artisan key:generate
