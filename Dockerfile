@@ -28,8 +28,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Ensure writable dirs
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose Render's expected port
-EXPOSE 10000
+# Expose port (Render will assign one, but we default to 8080 locally)
+EXPOSE 8080
 
-# Start Laravel server
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Start Laravel's built-in server, binding to Render's $PORT or fallback 8080
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
