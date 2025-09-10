@@ -18,13 +18,13 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
-# Copy Laravel app code
+# Copy Laravel app code (except node_modules)
 COPY . .
 
-# Copy built assets from frontend
+# Copy built assets from frontend stage
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Install Composer
+# Install Composer dependencies
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
@@ -35,4 +35,4 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 EXPOSE 8080
 
 # Start Laravel on Render’s injected $PORT
-CMD php artisan key:generate --force && php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
