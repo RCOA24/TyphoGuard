@@ -1,11 +1,25 @@
-// Optimized tide.js with caching, search, and no-data handling
+// Optimized tide.js with CORS-free instant search
 
 let tideChartFull;
 
-// ---------------- Cache ----------------
+// ---------------- Enhanced Cache with Longer Duration ----------------
 const apiCache = new Map();
 const searchCache = new Map();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes for better performance
+const SEARCH_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes for search results
+
+// ---------------- Debounce Utility ----------------
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 // ---------------- Fetch Tide Data ----------------
 window.loadTideData = async function (lat, lon, date) {
@@ -16,7 +30,6 @@ window.loadTideData = async function (lat, lon, date) {
     console.log("Using cached tide data");
     updateTideUI(cached.data);
     updateTideChart(cached.data);
-    // Call handleDataSuccess for cached data too
     if (window.__tideAppInstance) {
       window.__tideAppInstance.handleDataSuccess(cached.data);
     }
@@ -28,7 +41,6 @@ window.loadTideData = async function (lat, lon, date) {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Check if data is empty or invalid
     if (!data?.hourly?.time?.length || !data?.hourly?.wave_height?.length) {
       console.warn("No marine data available for this location");
       if (window.__tideAppInstance) {
@@ -37,7 +49,6 @@ window.loadTideData = async function (lat, lon, date) {
       return null;
     }
 
-    // Check if all wave heights are null/undefined
     const validData = data.hourly.wave_height.filter(h => h !== null && h !== undefined && !isNaN(h));
     if (validData.length === 0) {
       console.warn("No valid wave height data for this location");
@@ -52,7 +63,6 @@ window.loadTideData = async function (lat, lon, date) {
     updateTideUI(data);
     updateTideChart(data);
     
-    // Call handleDataSuccess when data is successfully loaded
     if (window.__tideAppInstance) {
       window.__tideAppInstance.handleDataSuccess(data);
     }
@@ -67,41 +77,172 @@ window.loadTideData = async function (lat, lon, date) {
   }
 };
 
-// ---------------- Search Location ----------------
-async function searchLocation(query) {
+// ---------------- CORS-Free Location Search ----------------
+async function searchLocationNew(query) {
   const normalized = query.toLowerCase().trim();
+  console.log("🔍 NEW: Searching for:", normalized);
+  
   const cached = searchCache.get(normalized);
 
-  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    console.log("Using cached search results");
+  // Return cached results immediately
+  if (cached && Date.now() - cached.timestamp < SEARCH_CACHE_DURATION) {
+    console.log("✅ NEW: Using cached search results:", cached.data.length, "results");
     return cached.data;
   }
 
+  // Strategy 1: Direct CORS-enabled API (Photon - most reliable)
   try {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      query
-    )}&limit=5&countrycodes=ph`;
-    const response = await fetch(url);
+    console.log("🔄 NEW: Trying Photon API...");
+    const photonUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(query + ' Philippines')}&limit=8`;
+    console.log("🌐 NEW: Photon URL:", photonUrl);
+    
+    const response = await fetch(photonUrl);
+    console.log("📡 NEW: Photon response status:", response.status);
+    
+    if (!response.ok) {
+      throw new Error(`Photon API error: ${response.status}`);
+    }
+    
     const data = await response.json();
+    console.log("📦 NEW: Raw Photon data:", data);
+    
+    if (data.features && Array.isArray(data.features)) {
+      const results = data.features
+        .filter(item => {
+          const coords = item.geometry?.coordinates;
+          const hasCoords = coords && coords.length >= 2;
+          if (!hasCoords) console.log("❌ NEW: Filtered out item missing coordinates");
+          return hasCoords;
+        })
+        .map((item) => {
+          const props = item.properties || {};
+          const coords = item.geometry.coordinates;
+          
+          // Build display name
+          let displayName = props.name || props.street || 'Unknown Location';
+          if (props.city || props.state) {
+            const parts = [props.name, props.city, props.state].filter(Boolean);
+            displayName = parts.join(', ');
+          }
 
-    const results = data.map((item) => ({
-      display_name: item.display_name,
-      lat: parseFloat(item.lat),
-      lon: parseFloat(item.lon),
-    }));
+          const result = {
+            display_name: displayName,
+            full_display_name: displayName,
+            lat: coords[1], // Photon returns [lng, lat]
+            lon: coords[0],
+            type: props.osm_value || 'place',
+            importance: 0.7 // Default importance
+          };
+          
+          console.log("✨ NEW: Processed Photon result:", result);
+          return result;
+        })
+        .slice(0, 6);
 
-    searchCache.set(normalized, { data: results, timestamp: Date.now() });
-    return results;
+      if (results.length > 0) {
+        console.log("✅ NEW: Photon succeeded with", results.length, "results");
+        searchCache.set(normalized, { data: results, timestamp: Date.now() });
+        return results;
+      }
+    }
   } catch (error) {
-    console.error("Error searching locations:", error);
-    return [];
+    console.log("❌ NEW: Photon failed:", error.message);
   }
+
+  // Strategy 2: CORS Proxy for Nominatim
+  try {
+    console.log("🔄 NEW: Trying CORS proxy...");
+    const nominatimQuery = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=6&countrycodes=ph`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(nominatimQuery)}`;
+    console.log("🌐 NEW: Proxy URL:", proxyUrl);
+    
+    const response = await fetch(proxyUrl);
+    console.log("📡 NEW: Proxy response status:", response.status);
+    
+    if (!response.ok) {
+      throw new Error(`Proxy error: ${response.status}`);
+    }
+    
+    const proxyData = await response.json();
+    console.log("📦 NEW: Raw proxy data:", proxyData);
+    
+    const data = JSON.parse(proxyData.contents);
+    console.log("📦 NEW: Parsed Nominatim data:", data);
+    
+    if (Array.isArray(data)) {
+      const results = data
+        .filter(item => item.lat && item.lon)
+        .map((item) => {
+          const result = {
+            display_name: item.display_name.split(',').slice(0, 2).join(', '),
+            full_display_name: item.display_name,
+            lat: parseFloat(item.lat),
+            lon: parseFloat(item.lon),
+            type: item.type || 'place',
+            importance: item.importance || 0.5
+          };
+          
+          console.log("✨ NEW: Processed Nominatim result:", result);
+          return result;
+        })
+        .slice(0, 6);
+
+      if (results.length > 0) {
+        console.log("✅ NEW: Proxy succeeded with", results.length, "results");
+        searchCache.set(normalized, { data: results, timestamp: Date.now() });
+        return results;
+      }
+    }
+  } catch (error) {
+    console.log("❌ NEW: Proxy failed:", error.message);
+  }
+
+  // Strategy 3: Fallback to basic geocoding service
+  try {
+    console.log("🔄 NEW: Trying geocode.xyz...");
+    const geocodeUrl = `https://geocode.xyz/${encodeURIComponent(query + ' Philippines')}?json=1&region=PH`;
+    console.log("🌐 NEW: Geocode URL:", geocodeUrl);
+    
+    const response = await fetch(geocodeUrl);
+    console.log("📡 NEW: Geocode response status:", response.status);
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log("📦 NEW: Geocode data:", data);
+      
+      if (data.latt && data.longt && data.standard && data.standard.city) {
+        const result = {
+          display_name: `${data.standard.city}, ${data.standard.prov || 'Philippines'}`,
+          full_display_name: data.standard.addresst || data.standard.city,
+          lat: parseFloat(data.latt),
+          lon: parseFloat(data.longt),
+          type: 'city',
+          importance: 0.6
+        };
+        
+        console.log("✅ NEW: Geocode succeeded with 1 result:", result);
+        const results = [result];
+        searchCache.set(normalized, { data: results, timestamp: Date.now() });
+        return results;
+      }
+    }
+  } catch (error) {
+    console.log("❌ NEW: Geocode failed:", error.message);
+  }
+
+  // Return cached results even if expired, as ultimate fallback
+  if (cached) {
+    console.log("🔄 NEW: Using expired cached results as fallback:", cached.data.length, "results");
+    return cached.data;
+  }
+
+  console.log("❌ NEW: All strategies failed, returning empty results");
+  return [];
 }
 
 // ---------------- KPI Updates ----------------
 window.updateTideUI = function (data) {
   if (!data?.hourly?.time || !data?.hourly?.wave_height) {
-    // If no data, trigger the no-data handler
     if (window.__tideAppInstance) {
       window.__tideAppInstance.handleNoData();
     }
@@ -119,7 +260,6 @@ window.updateTideUI = function (data) {
   );
 
   if (!todayData.length) {
-    // If no data for today, trigger the no-data handler
     if (window.__tideAppInstance) {
       window.__tideAppInstance.handleNoData();
     }
@@ -194,10 +334,12 @@ window.updateTideChart = function (data) {
 // ---------------- Reverse Geocoding ----------------
 async function getLocationName(lat, lon) {
   try {
-    const res = await fetch(
+    // Use CORS-friendly reverse geocoding
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-    );
-    const data = await res.json();
+    )}`);
+    const proxyData = await res.json();
+    const data = JSON.parse(proxyData.contents);
     const a = data.address || {};
     return a.city || a.town || a.village || a.county || "Current Location";
   } catch {
@@ -205,7 +347,7 @@ async function getLocationName(lat, lon) {
   }
 }
 
-// ---------------- Alpine.js Component ----------------
+// ---------------- Enhanced Alpine.js Component ----------------
 window.tideApp = function () {
   return {
     lat: "",
@@ -221,6 +363,7 @@ window.tideApp = function () {
     isSearching: false,
     searchInputFocused: false,
     searchController: null,
+    lastSearchQuery: "", // Track last search to avoid duplicate searches
 
     showConsentModal: false,
     loadingLocation: false,
@@ -239,7 +382,6 @@ window.tideApp = function () {
       console.log("Data success called", data);
       this.showData = true;
       this.showNoDataMessage = false;
-      // Force Alpine to update the DOM
       this.$nextTick(() => {
         console.log("DOM updated, showData:", this.showData);
       });
@@ -250,7 +392,6 @@ window.tideApp = function () {
       this.showData = false;
       this.showNoDataMessage = true;
 
-      // Clear the KPI values immediately
       requestAnimationFrame(() => {
         const elements = [
           "next-high-value", "next-high-time", 
@@ -265,48 +406,117 @@ window.tideApp = function () {
         });
       });
 
-      // Destroy chart
       if (window.tideChart) {
         window.tideChart.destroy();
         window.tideChart = null;
       }
 
-      // Force Alpine to update the DOM
       this.$nextTick(() => {
         console.log("DOM updated, showNoDataMessage:", this.showNoDataMessage);
       });
     },
 
+    // Debounced search function for instant feel
+    debouncedSearch: null,
+
+    // Initialize debounced search in init
+    initDebouncedSearch() {
+      this.debouncedSearch = debounce(async (query) => {
+        await this.performActualSearch(query);
+      }, 200); // 200ms debounce - feels instant but reduces API calls
+    },
+
+    // Legacy method for backward compatibility (calls the new method)
     async performSearch() {
+      console.log("📞 NEW: performSearch() called (legacy method)");
+      this.onSearchInput();
+    },
+
+    // Called immediately on input change
+    onSearchInput() {
       const query = this.searchQuery.trim();
-      if (query.length < 2) {
+      console.log("🎯 NEW: Search input changed:", query);
+      
+      // Show loading state immediately
+      if (query.length >= 2) {
+        console.log("⏳ NEW: Setting loading state");
+        this.isSearching = true;
+        this.showSearchResults = true;
+        
+        // Show previous results if available while searching
+        const cachedResults = searchCache.get(query.toLowerCase());
+        if (cachedResults && cachedResults.data.length > 0) {
+          console.log("🎉 NEW: Found cached results immediately:", cachedResults.data.length);
+          this.searchResults = cachedResults.data;
+          this.isSearching = false;
+        }
+      } else {
+        console.log("🔄 NEW: Query too short, clearing results");
         this.searchResults = [];
         this.showSearchResults = false;
-        return;
+        this.isSearching = false;
       }
 
-      if (this.searchController) this.searchController.abort();
+      // Cancel previous search
+      if (this.searchController) {
+        this.searchController.abort();
+        console.log("⛔ NEW: Cancelled previous search");
+      }
+
+      // Trigger debounced search
+      if (query.length >= 2 && query !== this.lastSearchQuery) {
+        console.log("🚀 NEW: Triggering debounced search");
+        this.debouncedSearch(query);
+      }
+    },
+
+    // Actual search function using the NEW search method
+    async performActualSearch(query) {
+      console.log("🔄 NEW: Performing actual search for:", query);
+      
+      if (query !== this.searchQuery.trim()) {
+        console.log("❌ NEW: Query changed, aborting search");
+        return; // Query changed, ignore this search
+      }
+
+      this.lastSearchQuery = query;
       this.searchController = new AbortController();
 
-      this.isSearching = true;
       try {
-        const results = await searchLocation(query);
-        if (!this.searchController.signal.aborted) {
+        console.log("📞 NEW: Calling searchLocationNew API");
+        const results = await searchLocationNew(query); // Using NEW function
+        console.log("📥 NEW: Got search results:", results);
+        
+        // Check if query is still current
+        if (!this.searchController.signal.aborted && query === this.searchQuery.trim()) {
+          console.log("✅ NEW: Setting results in UI:", results.length, "results");
           this.searchResults = results;
           this.showSearchResults = results.length > 0;
+          this.isSearching = false;
+          
+          // Force reactivity update
+          this.$nextTick(() => {
+            console.log("🔄 NEW: DOM updated with search results");
+          });
+        } else {
+          console.log("⚠️ NEW: Search aborted or query changed");
         }
-      } catch {
-        this.searchResults = [];
-        this.showSearchResults = false;
+      } catch (error) {
+        if (!this.searchController.signal.aborted) {
+          console.error("💥 NEW: Search error in performActualSearch:", error);
+          this.searchResults = [];
+          this.showSearchResults = false;
+          this.isSearching = false;
+        }
       }
-      this.isSearching = false;
     },
 
     async selectSearchResult(result) {
       this.lat = result.lat;
       this.lon = result.lon;
-      this.searchQuery = result.display_name.split(",")[0];
+      this.searchQuery = result.display_name;
       this.showSearchResults = false;
+      this.isSearching = false;
 
       // Reset states before loading
       this.showData = false;
@@ -321,17 +531,25 @@ window.tideApp = function () {
 
     clearSearch() {
       this.searchQuery = "";
+      this.lastSearchQuery = "";
       this.searchResults = [];
       this.showSearchResults = false;
+      this.isSearching = false;
       this.lat = "";
       this.lon = "";
       this.showData = false;
       this.showNoDataMessage = false;
+      
+      if (this.searchController) {
+        this.searchController.abort();
+      }
     },
 
     onSearchFocus() {
       this.searchInputFocused = true;
-      if (this.searchResults.length > 0) this.showSearchResults = true;
+      if (this.searchResults.length > 0) {
+        this.showSearchResults = true;
+      }
     },
 
     onSearchBlur() {
@@ -341,14 +559,25 @@ window.tideApp = function () {
       }, 300);
     },
 
+    // Keyboard navigation for search results
+    onSearchKeydown(event) {
+      if (event.key === 'Escape') {
+        this.showSearchResults = false;
+        event.target.blur();
+      }
+      // Add arrow key navigation if needed
+    },
+
     async init() {
-      // IMPORTANT: Initialize global reference first
+      // Initialize global reference and debounced search
       this.initGlobal();
+      this.initDebouncedSearch();
       
       try {
         if (!localStorage.getItem("locationConsent")) {
           this.showConsentModal = true;
         }
+        
         const saved = localStorage.getItem("tideStation");
         if (saved) {
           const obj = JSON.parse(saved);
@@ -369,7 +598,6 @@ window.tideApp = function () {
       }
       this.loadingLocation = true;
       
-      // Reset states before loading
       this.showData = false;
       this.showNoDataMessage = false;
       
@@ -401,8 +629,10 @@ window.tideApp = function () {
         this.lat = "";
         this.lon = "";
         this.searchQuery = "";
+        this.lastSearchQuery = "";
         this.searchResults = [];
         this.showSearchResults = false;
+        this.isSearching = false;
 
         requestAnimationFrame(() => {
           const elements = [

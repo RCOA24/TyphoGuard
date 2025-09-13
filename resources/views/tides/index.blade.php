@@ -86,6 +86,7 @@
             @input="performSearch()"
             @focus="onSearchFocus()"
             @blur="onSearchBlur()"
+              @keydown="onSearchKeydown($event)"
             placeholder="Type any location in Philippines..."
             class="pl-10 pr-10 w-full border border-slate-300 dark:border-slate-700 rounded-xl py-2 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-500 transition"
           />
