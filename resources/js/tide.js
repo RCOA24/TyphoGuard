@@ -14,6 +14,12 @@ window.loadTideData = async function (lat, lon, date) {
 
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
     console.log("Using cached tide data");
+    updateTideUI(cached.data);
+    updateTideChart(cached.data);
+    // Call handleDataSuccess for cached data too
+    if (window.__tideAppInstance) {
+      window.__tideAppInstance.handleDataSuccess(cached.data);
+    }
     return cached.data;
   }
 
@@ -22,9 +28,22 @@ window.loadTideData = async function (lat, lon, date) {
     const response = await fetch(url);
     const data = await response.json();
 
+    // Check if data is empty or invalid
     if (!data?.hourly?.time?.length || !data?.hourly?.wave_height?.length) {
       console.warn("No marine data available for this location");
-      window.__tideAppInstance?.handleNoData();
+      if (window.__tideAppInstance) {
+        window.__tideAppInstance.handleNoData();
+      }
+      return null;
+    }
+
+    // Check if all wave heights are null/undefined
+    const validData = data.hourly.wave_height.filter(h => h !== null && h !== undefined && !isNaN(h));
+    if (validData.length === 0) {
+      console.warn("No valid wave height data for this location");
+      if (window.__tideAppInstance) {
+        window.__tideAppInstance.handleNoData();
+      }
       return null;
     }
 
@@ -32,11 +51,18 @@ window.loadTideData = async function (lat, lon, date) {
 
     updateTideUI(data);
     updateTideChart(data);
+    
+    // Call handleDataSuccess when data is successfully loaded
+    if (window.__tideAppInstance) {
+      window.__tideAppInstance.handleDataSuccess(data);
+    }
 
     return data;
   } catch (error) {
     console.error("Error fetching tide data:", error);
-    window.__tideAppInstance?.handleNoData();
+    if (window.__tideAppInstance) {
+      window.__tideAppInstance.handleNoData();
+    }
     return null;
   }
 };
@@ -74,7 +100,13 @@ async function searchLocation(query) {
 
 // ---------------- KPI Updates ----------------
 window.updateTideUI = function (data) {
-  if (!data?.hourly?.time || !data?.hourly?.wave_height) return;
+  if (!data?.hourly?.time || !data?.hourly?.wave_height) {
+    // If no data, trigger the no-data handler
+    if (window.__tideAppInstance) {
+      window.__tideAppInstance.handleNoData();
+    }
+    return;
+  }
 
   const parsed = data.hourly.time.map((t, i) => ({
     time: new Date(t),
@@ -86,7 +118,13 @@ window.updateTideUI = function (data) {
     d.time.toISOString().startsWith(todayStr)
   );
 
-  if (!todayData.length) return;
+  if (!todayData.length) {
+    // If no data for today, trigger the no-data handler
+    if (window.__tideAppInstance) {
+      window.__tideAppInstance.handleNoData();
+    }
+    return;
+  }
 
   const maxPoint = todayData.reduce((a, b) => (b.value > a.value ? b : a));
   const minPoint = todayData.reduce((a, b) => (b.value < a.value ? b : a));
@@ -198,26 +236,45 @@ window.tideApp = function () {
     },
 
     handleDataSuccess(data) {
+      console.log("Data success called", data);
       this.showData = true;
       this.showNoDataMessage = false;
+      // Force Alpine to update the DOM
+      this.$nextTick(() => {
+        console.log("DOM updated, showData:", this.showData);
+      });
     },
 
     handleNoData() {
+      console.log("No data called");
       this.showData = false;
       this.showNoDataMessage = true;
 
+      // Clear the KPI values immediately
       requestAnimationFrame(() => {
-        document.getElementById("next-high-value").textContent = "-- m";
-        document.getElementById("next-high-time").textContent = "--";
-        document.getElementById("next-low-value").textContent = "-- m";
-        document.getElementById("next-low-time").textContent = "--";
-        document.getElementById("tide-range").textContent = "-- m";
+        const elements = [
+          "next-high-value", "next-high-time", 
+          "next-low-value", "next-low-time", 
+          "tide-range"
+        ];
+        elements.forEach(id => {
+          const element = document.getElementById(id);
+          if (element) {
+            element.textContent = id.includes('time') ? '--' : '-- m';
+          }
+        });
       });
 
+      // Destroy chart
       if (window.tideChart) {
         window.tideChart.destroy();
         window.tideChart = null;
       }
+
+      // Force Alpine to update the DOM
+      this.$nextTick(() => {
+        console.log("DOM updated, showNoDataMessage:", this.showNoDataMessage);
+      });
     },
 
     async performSearch() {
@@ -251,13 +308,14 @@ window.tideApp = function () {
       this.searchQuery = result.display_name.split(",")[0];
       this.showSearchResults = false;
 
+      // Reset states before loading
+      this.showData = false;
+      this.showNoDataMessage = false;
+
       const data = await loadTideData(this.lat, this.lon, this.date);
       if (data) {
         this.saveTideStation(this.searchQuery, data);
         updateDashboardTide(this.searchQuery, data);
-        this.handleDataSuccess(data);
-      } else {
-        this.handleNoData();
       }
     },
 
@@ -284,6 +342,9 @@ window.tideApp = function () {
     },
 
     async init() {
+      // IMPORTANT: Initialize global reference first
+      this.initGlobal();
+      
       try {
         if (!localStorage.getItem("locationConsent")) {
           this.showConsentModal = true;
@@ -307,6 +368,11 @@ window.tideApp = function () {
         return;
       }
       this.loadingLocation = true;
+      
+      // Reset states before loading
+      this.showData = false;
+      this.showNoDataMessage = false;
+      
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           this.lat = pos.coords.latitude;
@@ -316,9 +382,6 @@ window.tideApp = function () {
           const data = await loadTideData(this.lat, this.lon, this.date);
           if (data) {
             updateDashboardTide(this.userLocation, data);
-            this.handleDataSuccess(data);
-          } else {
-            this.handleNoData();
           }
           this.loadingLocation = false;
         },
@@ -342,11 +405,17 @@ window.tideApp = function () {
         this.showSearchResults = false;
 
         requestAnimationFrame(() => {
-          document.getElementById("next-high-value").textContent = "-- m";
-          document.getElementById("next-high-time").textContent = "--";
-          document.getElementById("next-low-value").textContent = "-- m";
-          document.getElementById("next-low-time").textContent = "--";
-          document.getElementById("tide-range").textContent = "-- m";
+          const elements = [
+            "next-high-value", "next-high-time", 
+            "next-low-value", "next-low-time", 
+            "tide-range"
+          ];
+          elements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+              element.textContent = id.includes('time') ? '--' : '-- m';
+            }
+          });
         });
 
         if (window.tideChart) {

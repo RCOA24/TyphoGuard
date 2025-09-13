@@ -2,6 +2,8 @@
 @section('content')
 <div x-data="tideApp()" x-init="init()" class="space-y-6">
 
+
+
   <!-- Consent Modal -->
   <div 
      x-show="showConsentModal" 
@@ -77,7 +79,7 @@
             </svg>
           </button>
           
-<!-- Search Input -->
+          <!-- Search Input -->
           <input 
             type="text"
             x-model="searchQuery"
@@ -110,13 +112,14 @@
                 </div>
               </div>
             </template>
-</div>
+          </div>
 
-        <p class="text-xs text-slate-500 mt-1">
-          Search for any location in the Philippines
-        </p>
+          <p class="text-xs text-slate-500 mt-1">
+            Search for any location in the Philippines
+          </p>
         </div>
       </div>
+
 
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -218,10 +221,12 @@
           </button>
         </div>
       </div>
- <!-- ⚠️ No Data Message -->
+
+      <!-- ⚠️ No Data Message -->
       <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 mt-4" 
            x-show="showNoDataMessage" 
-           x-transition.opacity.duration.300ms>
+           x-transition.opacity.duration.300ms
+           style="display: none;">
         <div class="flex items-start gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -235,11 +240,7 @@
         </div>
       </div>
 
-      
-
- 
-
-  <!-- ✅ Data Display (KPI + Chart) -->
+      <!-- ✅ Data Display (KPI + Chart) -->
       <div x-show="showData" x-transition.opacity.duration.300ms>
         <!-- KPI Cards -->
         <div class="grid sm:grid-cols-3 gap-4 mt-4">
@@ -284,17 +285,11 @@
           </div>
         </div>
 
-
-
-  
-  <!-- Chart -->
-  <div class="h-56 sm:h-72 lg:h-96 rounded-lg bg-slate-100 dark:bg-slate-800 p-2 mt-4">
-    <canvas id="tideChartFull"></canvas>
-  </div>
-</div>
-
-
-
+        <!-- Chart -->
+        <div class="h-56 sm:h-72 lg:h-96 rounded-lg bg-slate-100 dark:bg-slate-800 p-2 mt-4">
+          <canvas id="tideChartFull"></canvas>
+        </div>
+      </div>
 
       <!-- Data Sources -->
       <div class="space-y-2">
@@ -315,6 +310,4 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Add enhanced tide.js -->
 <script src="{{ asset('js/tide.js') }}"></script>
-@endsection
-@section('scripts')
 @endsection
