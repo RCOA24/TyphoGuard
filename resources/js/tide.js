@@ -1,24 +1,78 @@
-// ---------------- tide.js (copy-paste) ----------------
+// Optimized tide.js with caching, search, and no-data handling
 
 let tideChartFull;
 
-// Fetch tide data from Open-Meteo API
+// ---------------- Cache ----------------
+const apiCache = new Map();
+const searchCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// ---------------- Fetch Tide Data ----------------
 window.loadTideData = async function (lat, lon, date) {
+  const cacheKey = `${lat}-${lon}-${date}`;
+  const cached = apiCache.get(cacheKey);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log("Using cached tide data");
+    return cached.data;
+  }
+
   try {
     const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=wave_height&timezone=auto&start_date=${date}&end_date=${date}`;
     const response = await fetch(url);
     const data = await response.json();
 
-    if (typeof updateTideUI === "function") updateTideUI(data);
-    if (typeof updateTideChart === "function") updateTideChart(data);
+    if (!data?.hourly?.time?.length || !data?.hourly?.wave_height?.length) {
+      console.warn("No marine data available for this location");
+      window.__tideAppInstance?.handleNoData();
+      return null;
+    }
+
+    apiCache.set(cacheKey, { data, timestamp: Date.now() });
+
+    updateTideUI(data);
+    updateTideChart(data);
 
     return data;
   } catch (error) {
     console.error("Error fetching tide data:", error);
+    window.__tideAppInstance?.handleNoData();
+    return null;
   }
 };
 
-// Update KPI values
+// ---------------- Search Location ----------------
+async function searchLocation(query) {
+  const normalized = query.toLowerCase().trim();
+  const cached = searchCache.get(normalized);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log("Using cached search results");
+    return cached.data;
+  }
+
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+      query
+    )}&limit=5&countrycodes=ph`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const results = data.map((item) => ({
+      display_name: item.display_name,
+      lat: parseFloat(item.lat),
+      lon: parseFloat(item.lon),
+    }));
+
+    searchCache.set(normalized, { data: results, timestamp: Date.now() });
+    return results;
+  } catch (error) {
+    console.error("Error searching locations:", error);
+    return [];
+  }
+}
+
+// ---------------- KPI Updates ----------------
 window.updateTideUI = function (data) {
   if (!data?.hourly?.time || !data?.hourly?.wave_height) return;
 
@@ -37,49 +91,69 @@ window.updateTideUI = function (data) {
   const maxPoint = todayData.reduce((a, b) => (b.value > a.value ? b : a));
   const minPoint = todayData.reduce((a, b) => (b.value < a.value ? b : a));
 
-  document.getElementById("next-high-value").textContent = `${maxPoint.value.toFixed(2)} m`;
-  document.getElementById("next-high-time").textContent = maxPoint.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  document.getElementById("next-low-value").textContent = `${minPoint.value.toFixed(2)} m`;
-  document.getElementById("next-low-time").textContent = minPoint.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  document.getElementById("tide-range").textContent = `${(maxPoint.value - minPoint.value).toFixed(2)} m`;
+  requestAnimationFrame(() => {
+    document.getElementById("next-high-value").textContent =
+      `${maxPoint.value.toFixed(2)} m`;
+    document.getElementById("next-high-time").textContent =
+      maxPoint.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    document.getElementById("next-low-value").textContent =
+      `${minPoint.value.toFixed(2)} m`;
+    document.getElementById("next-low-time").textContent =
+      minPoint.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    document.getElementById("tide-range").textContent =
+      `${(maxPoint.value - minPoint.value).toFixed(2)} m`;
+  });
 };
 
-// Update tide chart
+// ---------------- Chart Updates ----------------
 window.updateTideChart = function (data) {
-  const ctx = document.getElementById("tideChartFull").getContext("2d");
-
+  const ctx = document.getElementById("tideChartFull")?.getContext("2d");
+  if (!ctx) return;
   if (window.tideChart) window.tideChart.destroy();
+
+  const step = Math.ceil(data.hourly.time.length / 24);
+  const indices = [];
+  for (let i = 0; i < data.hourly.time.length; i += step) indices.push(i);
 
   window.tideChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: data.hourly.time.map((t) =>
-        new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      labels: indices.map((i) =>
+        new Date(data.hourly.time[i]).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
       ),
       datasets: [
         {
           label: "Wave Height (m)",
-          data: data.hourly.wave_height,
+          data: indices.map((i) => data.hourly.wave_height[i]),
           borderColor: "rgb(59, 130, 246)",
           backgroundColor: "rgba(59, 130, 246, 0.2)",
           tension: 0.4,
           fill: true,
+          pointRadius: 2,
+          pointHoverRadius: 4,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: { duration: 400 },
       scales: {
-        y: { beginAtZero: true, ticks: { callback: (val) => `${val} m` } },
+        y: { beginAtZero: true, ticks: { callback: (v) => `${v} m` } },
         x: { ticks: { maxTicksLimit: 6 } },
       },
-      plugins: { legend: { display: false }, tooltip: { mode: "index", intersect: false } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: "index", intersect: false },
+      },
     },
   });
 };
 
-// Reverse geocoding
+// ---------------- Reverse Geocoding ----------------
 async function getLocationName(lat, lon) {
   try {
     const res = await fetch(
@@ -88,27 +162,34 @@ async function getLocationName(lat, lon) {
     const data = await res.json();
     const a = data.address || {};
     return a.city || a.town || a.village || a.county || "Current Location";
-  } catch (err) {
-    console.error("Reverse geocoding failed:", err);
+  } catch {
     return "Current Location";
   }
 }
 
-// -------- Alpine.js component --------
+// ---------------- Alpine.js Component ----------------
 window.tideApp = function () {
   return {
-    lat: '',
-    lon: '',
-    selectedRegion: "",
-    selectedStation: "",
-    userLocation: "", // display label for live location
-    stations: [],     // ALWAYS: [{ region, stations: [{ station, lat, lon }] }]
+    lat: "",
+    lon: "",
+    userLocation: "",
     date: new Date().toISOString().slice(0, 10),
-    showData: true,
+    showData: false,
+    showNoDataMessage: false,
 
-    // Consent + loader
+    searchQuery: "",
+    searchResults: [],
+    showSearchResults: false,
+    isSearching: false,
+    searchInputFocused: false,
+    searchController: null,
+
     showConsentModal: false,
     loadingLocation: false,
+
+    initGlobal() {
+      window.__tideAppInstance = this;
+    },
 
     confirmLocation() {
       this.showConsentModal = false;
@@ -116,198 +197,169 @@ window.tideApp = function () {
       this.useMyLocation();
     },
 
-    // Normalize whatever /tides.json returns into grouped-by-region shape
-    normalizeStations(raw) {
-      // Already grouped
-      if (Array.isArray(raw) && raw[0]?.region && raw[0]?.stations) return raw;
-      if (raw && Array.isArray(raw.regions)) return raw.regions;
-
-      // Flat list -> group
-      if (Array.isArray(raw)) {
-        const map = {};
-        raw.forEach((row) => {
-          const region = row.State || row.region || "Others";
-          const station = row.Station || row.station;
-          const lat = Number(row.Latitude ?? row.lat);
-          const lon = Number(row.Longitude ?? row.lon);
-          if (!station || Number.isNaN(lat) || Number.isNaN(lon)) return;
-          map[region] = map[region] || [];
-          map[region].push({ station, lat, lon });
-        });
-        return Object.keys(map)
-          .sort()
-          .map((r) => ({ region: r, stations: map[r] }));
-      }
-
-      console.warn("Unrecognized tides.json format:", raw);
-      return [];
+    handleDataSuccess(data) {
+      this.showData = true;
+      this.showNoDataMessage = false;
     },
 
-    
+    handleNoData() {
+      this.showData = false;
+      this.showNoDataMessage = true;
+
+      requestAnimationFrame(() => {
+        document.getElementById("next-high-value").textContent = "-- m";
+        document.getElementById("next-high-time").textContent = "--";
+        document.getElementById("next-low-value").textContent = "-- m";
+        document.getElementById("next-low-time").textContent = "--";
+        document.getElementById("tide-range").textContent = "-- m";
+      });
+
+      if (window.tideChart) {
+        window.tideChart.destroy();
+        window.tideChart = null;
+      }
+    },
+
+    async performSearch() {
+      const query = this.searchQuery.trim();
+      if (query.length < 2) {
+        this.searchResults = [];
+        this.showSearchResults = false;
+        return;
+      }
+
+      if (this.searchController) this.searchController.abort();
+      this.searchController = new AbortController();
+
+      this.isSearching = true;
+      try {
+        const results = await searchLocation(query);
+        if (!this.searchController.signal.aborted) {
+          this.searchResults = results;
+          this.showSearchResults = results.length > 0;
+        }
+      } catch {
+        this.searchResults = [];
+        this.showSearchResults = false;
+      }
+      this.isSearching = false;
+    },
+
+    async selectSearchResult(result) {
+      this.lat = result.lat;
+      this.lon = result.lon;
+      this.searchQuery = result.display_name.split(",")[0];
+      this.showSearchResults = false;
+
+      const data = await loadTideData(this.lat, this.lon, this.date);
+      if (data) {
+        this.saveTideStation(this.searchQuery, data);
+        updateDashboardTide(this.searchQuery, data);
+        this.handleDataSuccess(data);
+      } else {
+        this.handleNoData();
+      }
+    },
+
+    clearSearch() {
+      this.searchQuery = "";
+      this.searchResults = [];
+      this.showSearchResults = false;
+      this.lat = "";
+      this.lon = "";
+      this.showData = false;
+      this.showNoDataMessage = false;
+    },
+
+    onSearchFocus() {
+      this.searchInputFocused = true;
+      if (this.searchResults.length > 0) this.showSearchResults = true;
+    },
+
+    onSearchBlur() {
+      setTimeout(() => {
+        this.searchInputFocused = false;
+        this.showSearchResults = false;
+      }, 300);
+    },
 
     async init() {
       try {
-        const res = await fetch("/tides.json");
-        const raw = await res.json();
-        this.stations = this.normalizeStations(raw);
-
-        // Only show consent if we don't have a decision yet
-        const consent = localStorage.getItem("locationConsent");
-        if (!consent) {
+        if (!localStorage.getItem("locationConsent")) {
           this.showConsentModal = true;
         }
-
-        // Restore last saved tide data (supports both old/new shapes)
         const saved = localStorage.getItem("tideStation");
         if (saved) {
           const obj = JSON.parse(saved);
           if (obj?.hourly) {
-            // new saved shape
             updateDashboardTide(obj.station ?? "Saved Station", { hourly: obj.hourly });
-          } else if (obj?.data?.hourly) {
-            // legacy shape
-            updateDashboardTide(obj.station ?? "Saved Station", obj.data);
+            this.handleDataSuccess({ hourly: obj.hourly });
           }
         }
       } catch (err) {
-        console.error("Error loading stations:", err);
-      }
-    },
-
-    async setStation(event) {
-      const value = event.target.value;
-
-      if (value === "") {
-        this.resetData();
-        return;
-      }
-
-      if (value === "user") {
-        // Use whatever lat/lon we currently have from geolocation
-        const data = await loadTideData(this.lat, this.lon, this.date);
-        if (data) updateDashboardTide(this.userLocation || "Current Location", data);
-        return;
-      }
-
-      // Parse "rIndex-sIndex"
-      const [rIndex, sIndex] = value.split("-").map(Number);
-      const region = this.stations[rIndex];
-      const s = region?.stations?.[sIndex];
-      if (!s) {
-        console.warn("Selected station not found for value:", value);
-        return;
-      }
-
-      this.lat = s.lat;
-      this.lon = s.lon;
-
-      const data = await loadTideData(this.lat, this.lon, this.date);
-      if (data) {
-        this.saveTideStation(s.station, data);
-        updateDashboardTide(s.station, data);
+        console.error("Init error:", err);
       }
     },
 
     async useMyLocation() {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser.");
-    return;
-  }
-
-  this.loadingLocation = true;
-
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      // Clear previously selected region and station
-      this.selectedRegion = "";
-      this.selectedStation = "";
-      
-      // Set current coordinates
-      this.lat = position.coords.latitude;
-      this.lon = position.coords.longitude;
-
-      // Get location name
-      this.userLocation = await getLocationName(this.lat, this.lon);
-
-      // Mark 'user' as selected station
-      this.selectedStation = "user";
-
-      // Load tide data
-      const data = await loadTideData(this.lat, this.lon, this.date);
-      if (data) updateDashboardTide(this.userLocation, data);
-
-      this.loadingLocation = false;
-    },
-    (error) => {
-      console.error("Error getting location:", error);
-      alert("Unable to retrieve your location.");
-      this.loadingLocation = false;
-    }
-  );
-},
-
-async refreshData() {
-  this.showData = false;
-
-  setTimeout(async () => {
-    // 🔄 Reset core state
-    this.selectedRegion = ""; 
-    this.selectedStation = "";
-    this.userLocation = "";
-    this.lat = '';
-    this.lon = '';
-
-    // 🔄 Reset KPIs
-    document.getElementById("next-high-value").textContent = "--";
-    document.getElementById("next-high-time").textContent = "--";
-    document.getElementById("next-low-value").textContent = "--";
-    document.getElementById("next-low-time").textContent = "--";
-    document.getElementById("tide-range").textContent = "--";
-
-    // 🔄 Destroy chart
-    if (window.tideChart) {
-      window.tideChart.destroy();
-      window.tideChart = null;
-    }
-
-    // 🔄 Clear saved station
-    localStorage.removeItem("tideStation");
-
-    // 🔄 Reload stations from tides.json
-    try {
-      const res = await fetch("/tides.json");
-      const raw = await res.json();
-      this.stations = this.normalizeStations(raw);
-    } catch (err) {
-      console.error("Error reloading stations:", err);
-      this.stations = [];
-    }
-
-    this.showData = true;
-
-    // ✅ Reload fresh tide data if something was selected before reset
-    if (this.selectedStation === "user" && this.userLocation) {
-      const data = await loadTideData(this.lat, this.lon, this.date);
-      if (data) updateDashboardTide(this.userLocation, data);
-    } else if (this.selectedRegion !== "" && this.selectedStation !== "") {
-      const [rIndex, sIndex] = this.selectedStation.split("-").map(Number);
-      const s = this.stations[rIndex]?.stations[sIndex];
-      if (s) {
-        this.lat = s.lat;
-        this.lon = s.lon;
-        const data = await loadTideData(this.lat, this.lon, this.date);
-        if (data) updateDashboardTide(s.station, data);
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported");
+        return;
       }
-    }
-  }, 300);
-},
+      this.loadingLocation = true;
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          this.lat = pos.coords.latitude;
+          this.lon = pos.coords.longitude;
+          this.userLocation = await getLocationName(this.lat, this.lon);
 
+          const data = await loadTideData(this.lat, this.lon, this.date);
+          if (data) {
+            updateDashboardTide(this.userLocation, data);
+            this.handleDataSuccess(data);
+          } else {
+            this.handleNoData();
+          }
+          this.loadingLocation = false;
+        },
+        () => {
+          alert("Unable to retrieve location");
+          this.loadingLocation = false;
+        }
+      );
+    },
 
+    async refreshData() {
+      this.showData = false;
+      this.showNoDataMessage = false;
+
+      setTimeout(() => {
+        this.userLocation = "";
+        this.lat = "";
+        this.lon = "";
+        this.searchQuery = "";
+        this.searchResults = [];
+        this.showSearchResults = false;
+
+        requestAnimationFrame(() => {
+          document.getElementById("next-high-value").textContent = "-- m";
+          document.getElementById("next-high-time").textContent = "--";
+          document.getElementById("next-low-value").textContent = "-- m";
+          document.getElementById("next-low-time").textContent = "--";
+          document.getElementById("tide-range").textContent = "-- m";
+        });
+
+        if (window.tideChart) {
+          window.tideChart.destroy();
+          window.tideChart = null;
+        }
+
+        localStorage.removeItem("tideStation");
+      }, 300);
+    },
 
     saveTideStation(stationName, data) {
-      // save compact, and read it back accordingly in init()
       if (!data?.hourly?.time || !data?.hourly?.wave_height) return;
-
       const cleaned = {
         station: stationName,
         hourly: {
@@ -315,15 +367,12 @@ async refreshData() {
           wave_height: data.hourly.wave_height,
         },
       };
-
       localStorage.setItem("tideStation", JSON.stringify(cleaned));
     },
   };
 };
 
-// Keep this — you might later display stationName somewhere in the UI
 function updateDashboardTide(stationName, data) {
   updateTideUI(data);
   updateTideChart(data);
 }
-// ---------------- end tide.js ----------------

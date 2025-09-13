@@ -388,25 +388,51 @@ async function loadWeatherData(container, location, forceRefresh = false) {
     const eveningWeather = getPeriodWeather(18, 24);
 
     card.innerHTML = `
-      <div class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-300 mb-1 truncate">
-        ${new Date(dateStr).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })}
-      </div>
-      <div class="text-3xl sm:text-4xl mb-1">${weather.icon}</div>
-      <div class="text-sm sm:text-base font-medium mb-1 truncate max-w-[120px] mx-auto">${weather.label}</div>
-      <div class="text-sm mb-1">🌡️ ${maxTemp.toFixed(0)}° / ${minTemp.toFixed(0)}°C</div>
-      
-      <div class="text-xs mb-2 text-gray-600 dark:text-gray-400">
-        ${morningWeather ? `☀️ 5am-12pm: ${morningWeather.label}` : ''}
-        <br>
-        ${afternoonWeather ? `<br>🌅 12pm-6pm: ${afternoonWeather.label}` : ''}
-        <br>
-        ${eveningWeather ? `<br>🌙 6pm-12am: ${eveningWeather.label}` : ''}
-      </div>
-      
-      <div class="text-sm mb-1">🌧️ ${rain.toFixed(1)} mm</div>
-      <br>
-      <div class="text-sm">💨 ${wind.toFixed(0)} km/h</div>
-    `;
+  <div class="text-[10px] text-gray-400 dark:text-gray-300 text-center mb-1">
+    ${new Date(dateStr).toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric' })}
+  </div>
+
+  <div class="flex flex-col items-center mb-2 gap-0.5">
+    <div class="text-2xl">${weather.icon}</div>
+    <div class="text-[11px] font-medium text-center leading-tight max-w-[100px]">
+      ${weather.label}
+    </div>
+    <div class="text-[11px] text-gray-700 dark:text-gray-200">
+      🌡️ ${maxTemp.toFixed(0)}° / ${minTemp.toFixed(0)}°C
+    </div>
+  </div>
+
+  <div class="text-[10px] space-y-1 mb-2">
+    <div class="flex justify-between">
+      <span>5–12</span>
+      <span style="color:${morningWeather?.color || '#999'}">
+        ${morningWeather ? `${morningWeather.icon} ${morningWeather.label}` : "-"}
+      </span>
+    </div>
+    <div class="flex justify-between">
+      <span>12–6</span>
+      <span style="color:${afternoonWeather?.color || '#999'}">
+        ${afternoonWeather ? `${afternoonWeather.icon} ${afternoonWeather.label}` : "-"}
+      </span>
+    </div>
+    <div class="flex justify-between">
+      <span>6–12</span>
+      <span style="color:${eveningWeather?.color || '#999'}">
+        ${eveningWeather ? `${eveningWeather.icon} ${eveningWeather.label}` : "-"}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex justify-between text-[11px] mb-1">
+    <span>🌧️</span>
+    <span>${rain.toFixed(1)} mm</span>
+  </div>
+  <div class="flex justify-between text-[11px]">
+    <span>💨</span>
+    <span>${wind.toFixed(0)} km/h</span>
+  </div>
+`;
+
     container.appendChild(card);
   });
 
