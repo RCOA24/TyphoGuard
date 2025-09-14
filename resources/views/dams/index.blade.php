@@ -54,31 +54,52 @@
             <div class="dam-card group max-w-3xl mx-auto">
                 <!-- Header with Dam Image -->
                     <div class="relative h-56 overflow-hidden rounded-t-xl">
-                    @php
-                        // Remove any existing "Dam" or "dam" from the name before adding it
-                        $cleanName = trim(str_ireplace(['dam', 'Dam'], '', $dam['dam']));
-                        $imageName = strtolower(str_replace(' ', '', $cleanName)) . '-dam.jpg';
-                    @endphp
-                    <img src="{{ asset('images/dams/' . $imageName) }}" 
-                         alt="{{ $cleanName }} Dam" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 class="text-2xl font-bold text-white">{{ $dam['dam'] }}</h3>
-                        <div class="flex items-center gap-2 mt-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium {{ 
-                                $percent >= 100 ? 'bg-red-600 text-white' : 
-                                ($percent > 80 ? 'bg-amber-500 text-white' : 
-                                'bg-emerald-500 text-white') 
-                            }}">
-                                {{ $percent >= 100 ? 'Critical Level' : ($percent > 80 ? 'Warning Level' : 'Safe Level') }}
-                            </span>
-                            <span class="text-white/90 text-sm">
-                                Updated: {{ $dam['observation_time'] }}
-                            </span>
+                        @php
+                            // Clean dam name and prepare base filename
+                            $cleanName = trim(str_ireplace(['dam', 'Dam'], '', $dam['dam']));
+                            $baseName = strtolower(str_replace(' ', '', $cleanName)) . '-dam';
+
+                            // Check for possible file extensions
+                            $possibleExtensions = ['.jpg', '.JPG', '.jpeg', '.JPEG'];
+                            $imageName = null;
+
+                            foreach ($possibleExtensions as $ext) {
+                                $path = public_path('images/dams/' . $baseName . $ext);
+                                if (file_exists($path)) {
+                                    $imageName = $baseName . $ext;
+                                    break;
+                                }
+                            }
+                        @endphp
+
+                        @if ($imageName)
+                            <img src="{{ asset('images/dams/' . $imageName) }}" 
+                                alt="{{ $cleanName }} Dam" 
+                                class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-600">
+                                No Image Available
+                            </div>
+                        @endif
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-2xl font-bold text-white">{{ $dam['dam'] }}</h3>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium {{ 
+                                    $percent >= 100 ? 'bg-red-600 text-white' : 
+                                    ($percent > 80 ? 'bg-amber-500 text-white' : 
+                                    'bg-emerald-500 text-white') 
+                                }}">
+                                    {{ $percent >= 100 ? 'Critical Level' : ($percent > 80 ? 'Warning Level' : 'Safe Level') }}
+                                </span>
+                                <span class="text-white/90 text-sm">
+                                    Updated: {{ $dam['observation_time'] }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+
 
                 <!-- Simple Status Message -->
                 <div class="px-6 py-3">
