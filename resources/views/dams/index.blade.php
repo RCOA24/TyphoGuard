@@ -59,15 +59,17 @@
                             $cleanName = trim(str_ireplace(['dam', 'Dam'], '', $dam['dam']));
                             $baseName = strtolower(str_replace(' ', '', $cleanName)) . '-dam';
 
-                            // Check for possible file extensions
-                            $possibleExtensions = ['.jpg', '.JPG', '.jpeg', '.JPEG'];
+                            // Scan the images/dams directory for matching file (case-insensitive)
+                            $imageDir = public_path('images/dams');
                             $imageName = null;
 
-                            foreach ($possibleExtensions as $ext) {
-                                $path = public_path('images/dams/' . $baseName . $ext);
-                                if (file_exists($path)) {
-                                    $imageName = $baseName . $ext;
-                                    break;
+                            if (is_dir($imageDir)) {
+                                $files = scandir($imageDir);
+                                foreach ($files as $file) {
+                                    if (preg_match('/^' . preg_quote($baseName, '/') . '\.(jpg|jpeg)$/i', $file)) {
+                                        $imageName = $file;
+                                        break;
+                                    }
                                 }
                             }
                         @endphp
@@ -99,6 +101,7 @@
                             </div>
                         </div>
                     </div>
+
 
 
                 <!-- Simple Status Message -->
