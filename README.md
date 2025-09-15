@@ -3,7 +3,9 @@ Real-time weather, tide, and dam monitoring platform for the Philippines.
 Built with Laravel 11, Tailwind CSS, and powered by public environmental APIs including PAG-ASA, Tomorrow.io, and WeatherAPI.
 ## 🔗 Live Demo: [TyphoGuard on Render](https://typhoguard.onrender.com/)
 
-## 🎥 [Watch the TyphoGuard Presentation](https://youtu.be/eVApJ1Uo2RY) 
+
+## [![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=eVApJ1Uo2RY)
+
 
 
 ## 🧭 Project Overview  
@@ -23,13 +25,13 @@ Weather & Radar
 - 7-day weather forecast for Manila and user’s location
 - Real-time location tracking for personalized weather updates
 
-## Dam Monitoring
+## 🏞️ Dam Monitoring
 - Real-time dam water levels from PAG-ASA
 - Safe, warning, and critical level indicators
 - Current water level comparison against safe level
 - Water level trends, dam operations, gate operations, and inflow/outflow data
 
-## Tide Monitoring
+## 🌊 Tide Monitoring
 - 🌍 Search-based location input using Nominatim and Photon
 - 📍 User-based geolocation for automatic tide updates
 - 🌗 Displays next high tide, next low tide, and tidal range
@@ -37,12 +39,12 @@ Weather & Radar
 - 🗺️ Latitude and longitude metadata for precision
 - 🧠 Smart fallback handling for ambiguous or missing locations
 
-## General
+## 📝 General
 - Fully responsive UI (desktop, tablet, mobile)  
 - Location-specific evacuation guides (planned feature)  
 - Intuitive, community-focused design  
 
-## 🛠 Tech Stack
+## 📚 Tech Stack
 - **Backend:** Laravel 11  
 - **Frontend:** Tailwind CSS + Alpine.js  
 - **Data Sources:** PAG-ASA, Tomorrow.io API, WeatherAPI  
