@@ -4,7 +4,7 @@ Built with Laravel 11, Tailwind CSS, and powered by public environmental APIs in
 ## 🔗 Live Demo: [TyphoGuard on Render](https://typhoguard.onrender.com/)
 
 
-## [![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=eVApJ1Uo2RY)
+## [![Watch the video](https://img.youtube.com/vi/eVApJ1Uo2RY/maxresdefault.jpg)](https://www.youtube.com/watch?v=eVApJ1Uo2RY)
 
 
 
